@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Venta de Motos | Axum Motors</title>
+
+    <!-- Google reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: #111;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .hero {
+            background: #000;
+            color: white;
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        section {
+            padding: 40px;
+            background: white;
+            margin: 20px auto;
+            max-width: 1100px;
+            border-radius: 8px;
+        }
+
+        .catalogo {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .moto {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .moto img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        form input,
+        form textarea,
+        form button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            box-sizing: border-box;
+        }
+
+        form textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        form button {
+            background: #111;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        form button:hover {
+            background: #333;
+        }
+
+        .msg {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        footer {
+            background: #111;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Axum Motors</h1>
+    <p>Venta de motos nuevas y seminuevas</p>
+</header>
+
+<div class="hero">
+    <h2>Potencia, diseño y velocidad</h2>
+    <p>Encuentra la moto perfecta para ti</p>
+</div>
+
+<!-- ====== BOTONES AGREGADOS ====== -->
+<section>
+    <h2>Explorar categorías</h2>
+
+    <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+        <a href="/motos.html">
+            <button style="padding: 15px 30px; font-size: 18px; cursor: pointer;">
+                Motos del Año
+            </button>
+        </a>
+
+        <a href="/otros.html">
+            <button style="padding: 15px 30px; font-size: 18px; cursor: pointer;">
+                Scooters, Bicicletas y Cuatrimoto
+            </button>
+        </a>
+    </div>
+</section>
+<!-- ====== FIN BOTONES ====== -->
+
+<section>
+    <h2>Catálogo de Motos</h2>
+
+    <div class="catalogo">
+        <div class="moto">
+            <img src="/uploads/IMG1.png" alt="Moto deportiva 600cc">
+            <h3>Moto Deportiva 600cc</h3>
+            <p>$120,000 MXN</p>
+        </div>
+
+        <div class="moto">
+            <img src="/uploads/IMG2.jpg" alt="Moto naked 750cc">
+            <h3>Moto Naked 750cc</h3>
+            <p>$135,000 MXN</p>
+        </div>
+
+        <div class="moto">
+            <img src="/uploads/IMG3.jpg" alt="Moto touring 900cc">
+            <h3>Moto Touring 900cc</h3>
+            <p>$180,000 MXN</p>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h2>Comparte tu moto</h2>
+
+    <form action="/upload-image" method="post" enctype="multipart/form-data">
+        <label>
+            Selecciona una imagen (PNG, JPG, WEBP – máx 5MB)
+            <input
+                type="file"
+                name="image"
+                accept="image/png,image/jpeg,image/webp"
+                required>
+        </label>
+A
+        <button type="submit">Subir imagen</button>
+
+        <!-- MENSAJE DE ERROR / ÉXITO -->
+        <div id="msg-image" class="msg"></div>
+    </form>
+</section>
+
+<section>
+    <h2>Motos de nuestros clientes</h2>
+    <div id="gallery" class="catalogo"></div>
+</section>
+
+<section>
+    <h2>Contáctanos</h2>
+
+    <form action="/enviar" method="post" autocomplete="off">
+        <input
+            type="text"
+            name="nombre"
+            placeholder="Nombre completo"
+            minlength="3"
+            maxlength="50"
+            required>
+
+        <textarea
+            name="mensaje"
+            placeholder="Mensaje o moto de interés"
+            minlength="10"
+            maxlength="500"
+            required></textarea>
+
+        <div class="g-recaptcha"
+             data-sitekey="6Lf0A00sAAAAALUJlTs6O9l1a93nyfUyvs-yBQlQ"></div>
+
+        <button type="submit">Enviar mensaje</button>
+
+        <!-- MENSAJE DE ERROR / ÉXITO -->
+        <div id="msg-form" class="msg"></div>
+    </form>
+</section>
+
+<footer>
+    <p>© 2026 Axum Motors</p>
+</footer>
+
+<script>
+/* -------- SUBIR IMAGEN -------- */
+document.querySelector("form[action='/upload-image']").addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const res = await fetch("/upload-image", {
+        method: "POST",
+        body: new FormData(e.target)
+    });
+
+    document.getElementById("msg-image").innerText = await res.text();
+});
+
+/* -------- ENVIAR MENSAJE -------- */
+document.querySelector("form[action='/enviar']").addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const form = e.target;
+    const data = new URLSearchParams(new FormData(form));
+
+    const res = await fetch("/enviar", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data
+    });
+
+    const text = await res.text();
+
+    // Mostrar mensaje
+    document.getElementById("msg-form").innerText = text;
+
+    // ✅ Si fue exitoso, redirigir
+    if (text.includes("✅")) {
+        setTimeout(() => {
+            window.location.href = "/gracias.html";
+        }, 800); // pequeño delay para que vea el mensaje
+    }
+});
+
+/* -------- GALERÍA -------- */
+fetch("/images")
+    .then(res => res.json())
+    .then(images => {
+        const gallery = document.getElementById("gallery");
+        images.forEach(src => {
+            const div = document.createElement("div");
+            div.className = "moto";
+            const img = document.createElement("img");
+            img.src = src;
+            img.alt = "Moto de cliente";
+            div.appendChild(img);
+            gallery.appendChild(div);
+        });
+    });
+</script>
+
+</body>
+</html>

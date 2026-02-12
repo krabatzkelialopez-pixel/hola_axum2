@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Motos del Año | Axum Motors</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            margin: 0;
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        /* ===== BREADCRUMBS ===== */
+        .breadcrumbs {
+            max-width: 1100px;
+            margin: 0 auto 20px;
+            font-size: 14px;
+        }
+
+        .breadcrumbs a {
+            color: #111;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .breadcrumbs span {
+            margin: 0 6px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .card h3 {
+            margin: 10px;
+        }
+
+        .back-btn {
+            display: block;
+            width: fit-content;
+            margin: 40px auto;
+            padding: 12px 25px;
+            background: #111;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .back-btn:hover {
+            background: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== BREADCRUMBS ===== -->
+    <nav class="breadcrumbs">
+        <a href="/">Inicio</a>
+        <span>›</span>
+        <strong>Motos del Año</strong>
+        <span>›</span>
+        <a href="/otros.html">Scooters y Otros</a>
+    </nav>
+
+    <h1>🏍️ Motos del Año</h1>
+    <p style="text-align:center;">Modelos más nuevos y potentes del año.</p>
+
+    <!-- GALERÍA DE MOTOS -->
+    <div class="grid">
+        <div class="card">
+            <img src="/uploads/mo1.jpg" alt="Moto Deportiva 1000cc">
+            <h3>Moto Deportiva 1000cc 2026</h3>
+        </div>
+
+        <div class="card">
+            <img src="/uploads/nk1.jpg" alt="Moto Naked 900cc">
+            <h3>Moto Naked 900cc 2026</h3>
+        </div>
+
+        <div class="card">
+            <img src="/uploads/mottu1.jpg" alt="Moto Touring 1200cc">
+            <h3>Moto Touring 1200cc 2026</h3>
+        </div>
+    </div>
+
+    <!-- BOTÓN REGRESAR -->
+    <a class="back-btn" href="/">⬅ Volver al inicio</a>
+
+</body>
+</html>
