@@ -207,7 +207,6 @@ document.querySelector("form[action='/enviar']")
 
     const formData = new FormData(e.target);
 
-    // Validar que el captcha esté resuelto
     if (!formData.get("g-recaptcha-response")) {
         document.getElementById("msg-form").innerText = "❌ Completa el reCAPTCHA";
         return;
@@ -221,18 +220,23 @@ document.querySelector("form[action='/enviar']")
     document.getElementById("msg-form").innerText = await res.text();
 });
 
-/* GALERÍA */
-fetch("/images")
-.then(r => r.json())
-.then(images => {
+/* GALERÍA CORREGIDA */
+async function loadImages() {
+    const res = await fetch("/images");
+    const images = await res.json();
+
     const gallery = document.getElementById("gallery");
-    images.forEach(src => {
+    gallery.innerHTML = "";
+
+    images.forEach(img => {
         const div = document.createElement("div");
         div.className = "moto";
-        div.innerHTML = `<img src="${src}">`;
+        div.innerHTML = `<img src="/uploads/${img.filename}">`;
         gallery.appendChild(div);
     });
-});
+}
+
+loadImages();
 
 /* ===== CRUD ADMIN ===== */
 async function cargarMensajes() {

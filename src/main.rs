@@ -171,6 +171,28 @@ async fn list_mensajes(State(pool): State<PgPool>) -> Json<Vec<Mensaje>> {
     Json(data)
 }
 
+#[derive(Serialize)]
+struct Image {
+    id: i32,
+    filename: String,
+}
+
+async fn list_images(State(pool): State<PgPool>) -> Json<Vec<Image>> {
+    let rows = sqlx::query("SELECT id, filename FROM images ORDER BY id DESC")
+        .fetch_all(&pool)
+        .await
+        .unwrap();
+
+    let images = rows
+        .into_iter()
+        .map(|r| Image {
+            id: r.get("id"),
+            filename: r.get("filename"),
+        })
+        .collect();
+
+    Json(images)
+}
 
 /* ---------- UTIL ---------- */
 
