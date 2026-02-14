@@ -200,25 +200,32 @@ document.querySelector("form[action='/upload-image']")
     document.getElementById("msg-image").innerText = await res.text();
 });
 
-/* ENVIAR MENSAJE (CORREGIDO PARA RECAPTCHA) */
+/* ENVIAR MENSAJE (CORREGIDO PARA AXUM FORM) */
 document.querySelector("form[action='/enviar']")
 .addEventListener("submit", async e => {
     e.preventDefault();
 
-    const formData = new FormData(e.target);
+    const form = e.target;
+    const formData = new FormData(form);
 
     if (!formData.get("g-recaptcha-response")) {
         document.getElementById("msg-form").innerText = "❌ Completa el reCAPTCHA";
         return;
     }
 
+    const urlEncoded = new URLSearchParams(formData);
+
     const res = await fetch("/enviar", {
         method: "POST",
-        body: formData
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: urlEncoded
     });
 
     document.getElementById("msg-form").innerText = await res.text();
 });
+
 
 /* GALERÍA CORREGIDA */
 async function loadImages() {
