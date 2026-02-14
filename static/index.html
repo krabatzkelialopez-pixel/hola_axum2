@@ -3,112 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Venta de Motos | Axum Motors</title>
+    
+    <link rel="stylesheet" href="/css/styles.css">
 
-    <!-- Google reCAPTCHA -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f2f2f2;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            background: #111;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .hero {
-            background: #000;
-            color: white;
-            padding: 80px 40px;
-            text-align: center;
-        }
-
-        section {
-            padding: 40px;
-            background: white;
-            margin: 20px auto;
-            max-width: 1100px;
-            border-radius: 8px;
-        }
-
-        .catalogo {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .moto {
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            padding: 15px;
-            text-align: center;
-        }
-
-        .moto img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-
-        form input,
-        form textarea,
-        form button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            box-sizing: border-box;
-        }
-
-        form textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        form button {
-            background: #111;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        form button:hover {
-            background: #333;
-        }
-
-        .msg {
-            margin-top: 10px;
-            font-weight: bold;
-        }
-
-        table {
-            font-size: 14px;
-        }
-
-        /* ===== AGREGADO RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            table {
-                font-size: 12px;
-            }
-        }
-
-        footer {
-            background: #111;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin-top: 40px;
-        }
-    </style>
 </head>
 
 <body>
@@ -136,18 +36,24 @@
     <div class="catalogo">
         <div class="moto">
             <img src="/uploads/IMG1.png">
-            <h3>Moto Deportiva 600cc</h3>
-            <p>$120,000 MXN</p>
+            <div class="moto-info">
+                <h3>Moto Deportiva 600cc</h3>
+                <p class="price">$120,000 MXN</p>
+            </div>
         </div>
         <div class="moto">
             <img src="/uploads/IMG2.jpg">
-            <h3>Moto Naked 750cc</h3>
-            <p>$135,000 MXN</p>
+            <div class="moto-info">
+                <h3>Moto Naked 750cc</h3>
+                <p class="price">$135,000 MXN</p>
+            </div>
         </div>
         <div class="moto">
             <img src="/uploads/IMG3.jpg">
-            <h3>Moto Touring 900cc</h3>
-            <p>$180,000 MXN</p>
+            <div class="moto-info">
+                <h3>Moto Touring 900cc</h3>
+                <p class="price">$180,000 MXN</p>
+            </div>
         </div>
     </div>
 </section>
@@ -180,7 +86,7 @@
 <section>
     <h2>📋 Panel de Mensajes (Admin)</h2>
     <div style="overflow-x:auto;">
-        <table border="1" width="100%" cellpadding="8">
+        <table>
             <thead>
                 <tr>
                     <th>ID</th>
@@ -203,26 +109,31 @@
 document.querySelector("form[action='/upload-image']")
 .addEventListener("submit", async e => {
     e.preventDefault();
+    const msgDiv = document.getElementById("msg-image"); // Referencia al div
     const res = await fetch("/upload-image", { method: "POST", body: new FormData(e.target) });
 
     if (!res.ok) {
-        document.getElementById("msg-image").innerText = "❌ Error en servidor";
+        msgDiv.innerText = "❌ Error en servidor";
+        msgDiv.className = "msg error"; // Clase CSS para rojo
         return;
     }
 
-    document.getElementById("msg-image").innerText = await res.text();
+    msgDiv.innerText = await res.text();
+    msgDiv.className = "msg success"; // Clase CSS para verde
 });
 
 /* ENVIAR MENSAJE */
 document.querySelector("form[action='/enviar']")
 .addEventListener("submit", async e => {
     e.preventDefault();
+    const msgDiv = document.getElementById("msg-form"); // Referencia al div
 
     const form = e.target;
     const formData = new FormData(form);
 
     if (!formData.get("g-recaptcha-response")) {
-        document.getElementById("msg-form").innerText = "❌ Completa el reCAPTCHA";
+        msgDiv.innerText = "❌ Completa el reCAPTCHA";
+        msgDiv.className = "msg error";
         return;
     }
 
@@ -237,11 +148,13 @@ document.querySelector("form[action='/enviar']")
     });
 
     if (!res.ok) {
-        document.getElementById("msg-form").innerText = "❌ Error en servidor";
+        msgDiv.innerText = "❌ Error en servidor";
+        msgDiv.className = "msg error";
         return;
     }
 
-    document.getElementById("msg-form").innerText = await res.text();
+    msgDiv.innerText = await res.text();
+    msgDiv.className = "msg success";
 });
 
 /* GALERÍA */
@@ -256,6 +169,7 @@ async function loadImages() {
     images.forEach(img => {
         const div = document.createElement("div");
         div.className = "moto";
+        // Añadí la estructura interna para mantener consistencia visual
         div.innerHTML = `<img src="/uploads/${img.filename}">`;
         gallery.appendChild(div);
     });
@@ -278,11 +192,11 @@ async function cargarMensajes() {
             <td>${m.nombre}</td>
             <td>${m.mensaje}</td>
             <td>
-                <button onclick="editarMensaje(${m.id}, '${m.nombre}', '${m.mensaje}')"
-                style="background:orange;color:white;">✏️</button>
+                <button onclick="editarMensaje(${m.id}, '${m.nombre}', '${m.mensaje}')" 
+                style="background:var(--accent);color:white;margin-right:5px;">✏️</button>
 
-                <button onclick="eliminarMensaje(${m.id})"
-                style="background:red;color:white;">🗑</button>
+                <button onclick="eliminarMensaje(${m.id})" 
+                style="background:#c0392b;color:white;">🗑</button>
             </td>
         `;
         tbody.appendChild(tr);
