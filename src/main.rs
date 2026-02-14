@@ -11,6 +11,10 @@ use tower_http::{cors::CorsLayer, services::ServeDir};
 use tokio::io::AsyncWriteExt;
 use uuid::Uuid;
 use regex::Regex;
+use serde::Serialize;
+use axum::extract::Path;
+
+
 
 const MAX_IMAGE_SIZE: usize = 5 * 1024 * 1024;
 const ALLOWED_MIME: [&str; 4] = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
@@ -22,6 +26,12 @@ struct FormData {
     #[serde(rename = "g-recaptcha-response")]
     recaptcha: String,
 }
+#[derive(Serialize)]
+struct Mensaje {
+    id: i32,
+    nombre: String,
+    mensaje: String,
+}
 
 #[tokio::main]
 async fn main() {
@@ -30,13 +40,20 @@ async fn main() {
     let pool = PgPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
 
     let app = Router::new()
-        .route("/enviar", post(enviar))
-        .route("/upload-image", post(upload_image))
-        .route("/images", get(list_images))
-        .nest_service("/uploads", ServeDir::new("uploads"))
-        .fallback_service(ServeDir::new("static"))
-        .with_state(pool)
-        .layer(CorsLayer::permissive());
+    .route("/enviar", post(enviar))
+    .route("/upload-image", post(upload_image))
+    .route("/images", get(list_images))
+
+    // ===== CRUD MENSAJES =====
+    .route("/mensajes", get(list_mensajes))
+    .route("/mensajes/:id", axum::routing::delete(delete_mensaje))
+
+    .nest_service("/uploads", ServeDir::new("uploads"))
+    .fallback_service(ServeDir::new("static"))
+    .with_state(pool)
+    .layer(CorsLayer::permissive());
+
+
 
     let port: u16 = env::var("PORT").unwrap_or("3000".into()).parse().unwrap();
     let addr = SocketAddr::from(([0,0,0,0], port));
@@ -136,14 +153,24 @@ async fn upload_image(
 
 /* ---------- LISTAR ---------- */
 
-async fn list_images(State(pool): State<PgPool>) -> Json<Vec<String>> {
-    let rows = sqlx::query("SELECT filename FROM images ORDER BY created_at DESC")
+async fn list_mensajes(State(pool): State<PgPool>) -> Json<Vec<Mensaje>> {
+    let rows = sqlx::query("SELECT id, nombre, mensaje FROM mensajes ORDER BY id DESC")
         .fetch_all(&pool)
         .await
         .unwrap();
 
-    Json(rows.into_iter().map(|r| format!("/uploads/{}", r.get::<String,_>("filename"))).collect())
+    let data = rows
+        .into_iter()
+        .map(|r| Mensaje {
+            id: r.get("id"),
+            nombre: r.get("nombre"),
+            mensaje: r.get("mensaje"),
+        })
+        .collect();
+
+    Json(data)
 }
+
 
 /* ---------- UTIL ---------- */
 
@@ -151,5 +178,19 @@ fn sanitize_text(text: &mut String) {
     let forbidden = ["<", ">", "\"", "'", ";", "--", "script"];
     for f in forbidden {
         *text = text.replace(f, "");
+    }
+}
+
+async fn delete_mensaje(
+    State(pool): State<PgPool>,
+    Path(id): Path<i32>,
+) -> impl IntoResponse {
+    match sqlx::query("DELETE FROM mensajes WHERE id = $1")
+        .bind(id)
+        .execute(&pool)
+        .await
+    {
+        Ok(_) => Html("✅ Mensaje eliminado"),
+        Err(_) => Html("❌ Error al eliminar"),
     }
 }

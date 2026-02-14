@@ -90,6 +90,10 @@
             font-weight: bold;
         }
 
+        table {
+            font-size: 14px;
+        }
+
         footer {
             background: #111;
             color: white;
@@ -112,44 +116,29 @@
     <p>Encuentra la moto perfecta para ti</p>
 </div>
 
-<!-- ====== BOTONES AGREGADOS ====== -->
 <section>
     <h2>Explorar categorías</h2>
-
     <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
-        <a href="/motos.html">
-            <button style="padding: 15px 30px; font-size: 18px; cursor: pointer;">
-                Motos del Año
-            </button>
-        </a>
-
-        <a href="/otros.html">
-            <button style="padding: 15px 30px; font-size: 18px; cursor: pointer;">
-                Scooters, Bicicletas y Cuatrimoto
-            </button>
-        </a>
+        <a href="/motos.html"><button>Motos del Año</button></a>
+        <a href="/otros.html"><button>Scooters, Bicicletas y Cuatrimoto</button></a>
     </div>
 </section>
-<!-- ====== FIN BOTONES ====== -->
 
 <section>
     <h2>Catálogo de Motos</h2>
-
     <div class="catalogo">
         <div class="moto">
-            <img src="/uploads/IMG1.png" alt="Moto deportiva 600cc">
+            <img src="/uploads/IMG1.png">
             <h3>Moto Deportiva 600cc</h3>
             <p>$120,000 MXN</p>
         </div>
-
         <div class="moto">
-            <img src="/uploads/IMG2.jpg" alt="Moto naked 750cc">
+            <img src="/uploads/IMG2.jpg">
             <h3>Moto Naked 750cc</h3>
             <p>$135,000 MXN</p>
         </div>
-
         <div class="moto">
-            <img src="/uploads/IMG3.jpg" alt="Moto touring 900cc">
+            <img src="/uploads/IMG3.jpg">
             <h3>Moto Touring 900cc</h3>
             <p>$180,000 MXN</p>
         </div>
@@ -158,20 +147,9 @@
 
 <section>
     <h2>Comparte tu moto</h2>
-
     <form action="/upload-image" method="post" enctype="multipart/form-data">
-        <label>
-            Selecciona una imagen (PNG, JPG, WEBP – máx 5MB)
-            <input
-                type="file"
-                name="image"
-                accept="image/png,image/jpeg,image/webp"
-                required>
-        </label>
-A
+        <input type="file" name="image" required>
         <button type="submit">Subir imagen</button>
-
-        <!-- MENSAJE DE ERROR / ÉXITO -->
         <div id="msg-image" class="msg"></div>
     </form>
 </section>
@@ -183,31 +161,30 @@ A
 
 <section>
     <h2>Contáctanos</h2>
-
-    <form action="/enviar" method="post" autocomplete="off">
-        <input
-            type="text"
-            name="nombre"
-            placeholder="Nombre completo"
-            minlength="3"
-            maxlength="50"
-            required>
-
-        <textarea
-            name="mensaje"
-            placeholder="Mensaje o moto de interés"
-            minlength="10"
-            maxlength="500"
-            required></textarea>
-
-        <div class="g-recaptcha"
-             data-sitekey="6Lf0A00sAAAAALUJlTs6O9l1a93nyfUyvs-yBQlQ"></div>
-
+    <form action="/enviar" method="post">
+        <input type="text" name="nombre" placeholder="Nombre completo" required>
+        <textarea name="mensaje" placeholder="Mensaje" required></textarea>
+        <div class="g-recaptcha" data-sitekey="6Lf0A00sAAAAALUJlTs6O9l1a93nyfUyvs-yBQlQ"></div>
         <button type="submit">Enviar mensaje</button>
-
-        <!-- MENSAJE DE ERROR / ÉXITO -->
         <div id="msg-form" class="msg"></div>
     </form>
+</section>
+
+<section>
+    <h2>📋 Panel de Mensajes (Admin)</h2>
+    <div style="overflow-x:auto;">
+        <table border="1" width="100%" cellpadding="8">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Mensaje</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="mensajes-table"></tbody>
+        </table>
+    </div>
 </section>
 
 <footer>
@@ -215,61 +192,78 @@ A
 </footer>
 
 <script>
-/* -------- SUBIR IMAGEN -------- */
-document.querySelector("form[action='/upload-image']").addEventListener("submit", async e => {
+/* SUBIR IMAGEN */
+document.querySelector("form[action='/upload-image']")
+.addEventListener("submit", async e => {
     e.preventDefault();
-
-    const res = await fetch("/upload-image", {
-        method: "POST",
-        body: new FormData(e.target)
-    });
-
+    const res = await fetch("/upload-image", { method: "POST", body: new FormData(e.target) });
     document.getElementById("msg-image").innerText = await res.text();
 });
 
-/* -------- ENVIAR MENSAJE -------- */
-document.querySelector("form[action='/enviar']").addEventListener("submit", async e => {
+/* ENVIAR MENSAJE (CORREGIDO PARA RECAPTCHA) */
+document.querySelector("form[action='/enviar']")
+.addEventListener("submit", async e => {
     e.preventDefault();
 
-    const form = e.target;
-    const data = new URLSearchParams(new FormData(form));
+    const formData = new FormData(e.target);
+
+    // Validar que el captcha esté resuelto
+    if (!formData.get("g-recaptcha-response")) {
+        document.getElementById("msg-form").innerText = "❌ Completa el reCAPTCHA";
+        return;
+    }
 
     const res = await fetch("/enviar", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: data
+        body: formData
     });
 
-    const text = await res.text();
-
-    // Mostrar mensaje
-    document.getElementById("msg-form").innerText = text;
-
-    // ✅ Si fue exitoso, redirigir
-    if (text.includes("✅")) {
-        setTimeout(() => {
-            window.location.href = "/gracias.html";
-        }, 800); // pequeño delay para que vea el mensaje
-    }
+    document.getElementById("msg-form").innerText = await res.text();
 });
 
-/* -------- GALERÍA -------- */
+/* GALERÍA */
 fetch("/images")
-    .then(res => res.json())
-    .then(images => {
-        const gallery = document.getElementById("gallery");
-        images.forEach(src => {
-            const div = document.createElement("div");
-            div.className = "moto";
-            const img = document.createElement("img");
-            img.src = src;
-            img.alt = "Moto de cliente";
-            div.appendChild(img);
-            gallery.appendChild(div);
-        });
+.then(r => r.json())
+.then(images => {
+    const gallery = document.getElementById("gallery");
+    images.forEach(src => {
+        const div = document.createElement("div");
+        div.className = "moto";
+        div.innerHTML = `<img src="${src}">`;
+        gallery.appendChild(div);
     });
+});
+
+/* ===== CRUD ADMIN ===== */
+async function cargarMensajes() {
+    const res = await fetch("/mensajes");
+    const mensajes = await res.json();
+    const tbody = document.getElementById("mensajes-table");
+    tbody.innerHTML = "";
+
+    mensajes.forEach(m => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${m.id}</td>
+            <td>${m.nombre}</td>
+            <td>${m.mensaje}</td>
+            <td>
+                <button onclick="eliminarMensaje(${m.id})"
+                style="background:red;color:white;">🗑</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+async function eliminarMensaje(id) {
+    if (!confirm("¿Eliminar mensaje?")) return;
+    const res = await fetch(`/mensajes/${id}`, { method: "DELETE" });
+    alert(await res.text());
+    cargarMensajes();
+}
+
+cargarMensajes();
 </script>
 
 </body>
