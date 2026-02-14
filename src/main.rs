@@ -26,9 +26,20 @@ struct FormData {
     #[serde(rename = "g-recaptcha-response")]
     recaptcha: String,
 }
+
 #[derive(Serialize)]
 struct Mensaje {
     id: i32,
+    nombre: String,
+    mensaje: String,
+}
+
+/* ============================= */
+/* ===== NUEVO PARA UPDATE ===== */
+/* ============================= */
+
+#[derive(Deserialize)]
+struct UpdateData {
     nombre: String,
     mensaje: String,
 }
@@ -47,6 +58,7 @@ async fn main() {
     // ===== CRUD MENSAJES =====
     .route("/mensajes", get(list_mensajes))
     .route("/mensajes/:id", axum::routing::delete(delete_mensaje))
+    .route("/mensajes/:id", axum::routing::put(update_mensaje)) // 👈 AGREGADO
 
     .nest_service("/uploads", ServeDir::new("uploads"))
     .fallback_service(ServeDir::new("static"))
@@ -96,6 +108,41 @@ async fn enviar(
     }
 }
 
+/* ============================= */
+/* ===== FUNCIÓN UPDATE ========= */
+/* ============================= */
+
+async fn update_mensaje(
+    State(pool): State<PgPool>,
+    Path(id): Path<i32>,
+    Form(mut data): Form<UpdateData>,
+) -> impl IntoResponse {
+
+    sanitize_text(&mut data.nombre);
+    sanitize_text(&mut data.mensaje);
+
+    let name_re = Regex::new(r"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{3,50}$").unwrap();
+
+    if !name_re.is_match(&data.nombre) {
+        return Html("❌ Nombre inválido");
+    }
+
+    if data.mensaje.len() < 10 || data.mensaje.len() > 500 {
+        return Html("❌ Mensaje inválido");
+    }
+
+    match sqlx::query("UPDATE mensajes SET nombre=$1, mensaje=$2 WHERE id=$3")
+        .bind(&data.nombre)
+        .bind(&data.mensaje)
+        .bind(id)
+        .execute(&pool)
+        .await
+    {
+        Ok(_) => Html("✅ Mensaje actualizado correctamente"),
+        Err(_) => Html("❌ Error al actualizar mensaje"),
+    }
+}
+
 /* ---------- SUBIR IMÁGENES ---------- */
 
 async fn upload_image(
@@ -111,7 +158,6 @@ async fn upload_image(
             continue;
         }
 
-        // 👇 CLAVE: copiamos el MIME a String
         let mime = field
             .content_type()
             .map(|m| m.to_string())
@@ -149,7 +195,6 @@ async fn upload_image(
 
     Html("✅ Imagen subida correctamente").into_response()
 }
-
 
 /* ---------- LISTAR ---------- */
 

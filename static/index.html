@@ -94,6 +94,13 @@
             font-size: 14px;
         }
 
+        /* ===== AGREGADO RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            table {
+                font-size: 12px;
+            }
+        }
+
         footer {
             background: #111;
             color: white;
@@ -197,10 +204,16 @@ document.querySelector("form[action='/upload-image']")
 .addEventListener("submit", async e => {
     e.preventDefault();
     const res = await fetch("/upload-image", { method: "POST", body: new FormData(e.target) });
+
+    if (!res.ok) {
+        document.getElementById("msg-image").innerText = "❌ Error en servidor";
+        return;
+    }
+
     document.getElementById("msg-image").innerText = await res.text();
 });
 
-/* ENVIAR MENSAJE (CORREGIDO PARA AXUM FORM) */
+/* ENVIAR MENSAJE */
 document.querySelector("form[action='/enviar']")
 .addEventListener("submit", async e => {
     e.preventDefault();
@@ -223,15 +236,20 @@ document.querySelector("form[action='/enviar']")
         body: urlEncoded
     });
 
+    if (!res.ok) {
+        document.getElementById("msg-form").innerText = "❌ Error en servidor";
+        return;
+    }
+
     document.getElementById("msg-form").innerText = await res.text();
 });
 
-
-/* GALERÍA CORREGIDA */
+/* GALERÍA */
 async function loadImages() {
     const res = await fetch("/images");
-    const images = await res.json();
+    if (!res.ok) return;
 
+    const images = await res.json();
     const gallery = document.getElementById("gallery");
     gallery.innerHTML = "";
 
@@ -242,12 +260,13 @@ async function loadImages() {
         gallery.appendChild(div);
     });
 }
-
 loadImages();
 
 /* ===== CRUD ADMIN ===== */
 async function cargarMensajes() {
     const res = await fetch("/mensajes");
+    if (!res.ok) return;
+
     const mensajes = await res.json();
     const tbody = document.getElementById("mensajes-table");
     tbody.innerHTML = "";
@@ -259,6 +278,9 @@ async function cargarMensajes() {
             <td>${m.nombre}</td>
             <td>${m.mensaje}</td>
             <td>
+                <button onclick="editarMensaje(${m.id}, '${m.nombre}', '${m.mensaje}')"
+                style="background:orange;color:white;">✏️</button>
+
                 <button onclick="eliminarMensaje(${m.id})"
                 style="background:red;color:white;">🗑</button>
             </td>
@@ -267,9 +289,44 @@ async function cargarMensajes() {
     });
 }
 
+/* ===== NUEVO: EDITAR ===== */
+async function editarMensaje(id, nombre, mensaje) {
+
+    const nuevoNombre = prompt("Nuevo nombre:", nombre);
+    const nuevoMensaje = prompt("Nuevo mensaje:", mensaje);
+
+    if (!nuevoNombre || !nuevoMensaje) return;
+
+    const formData = new URLSearchParams();
+    formData.append("nombre", nuevoNombre);
+    formData.append("mensaje", nuevoMensaje);
+
+    const res = await fetch(`/mensajes/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: formData
+    });
+
+    if (!res.ok) {
+        alert("❌ Error al actualizar");
+        return;
+    }
+
+    alert(await res.text());
+    cargarMensajes();
+}
+
 async function eliminarMensaje(id) {
     if (!confirm("¿Eliminar mensaje?")) return;
     const res = await fetch(`/mensajes/${id}`, { method: "DELETE" });
+
+    if (!res.ok) {
+        alert("❌ Error al eliminar");
+        return;
+    }
+
     alert(await res.text());
     cargarMensajes();
 }
