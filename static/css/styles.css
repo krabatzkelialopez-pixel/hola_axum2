@@ -29,7 +29,7 @@ header {
     color: white;
     padding: 20px;
     display: flex;
-    justify-content: space-between; /* Separa Título y Texto a los extremos */
+    justify-content: space-between; /* Separa Logo y Texto a los extremos */
     align-items: center;
     box-shadow: 0 2px 10px rgba(0,0,0,0.3);
     position: sticky; /* Se queda pegado arriba al bajar */
@@ -50,6 +50,26 @@ header p {
     font-size: 0.9rem;
     opacity: 0.8;
 }
+
+/* ================= NUEVO: ESTILOS PARA EL LOGO ================= */
+.logo-container {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.site-logo {
+    height: 70px; /* Tamaño del logo */
+    width: auto;  /* Mantiene proporción */
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.site-logo:hover {
+    transform: scale(1.05); /* Zoom al pasar el mouse */
+}
+/* =============================================================== */
+
 
 /* ================= HERO SECTION (CORREGIDO) ================= */
 .hero {
@@ -367,7 +387,7 @@ th { background: var(--primary); color: white; padding: 15px; text-align: left; 
 td { padding: 15px; border-bottom: 1px solid #eee; }
 tr:last-child td { border-bottom: none; }
 
-/* --- Breadcrumbs --- */
+/* --- Breadcrumbs (legacy support) --- */
 .breadcrumbs {
     padding: 20px 0;
     font-size: 0.9rem;
