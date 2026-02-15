@@ -23,21 +23,48 @@ body {
 }
 
 /* --- Header & Hero --- */
-/* ================= HERO SECTION (NUEVO) ================= */
+
+header {
+    background-color: var(--primary); /* Fondo negro para la barra */
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between; /* Separa Título y Texto a los extremos */
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    position: sticky; /* Se queda pegado arriba al bajar */
+    top: 0;
+    z-index: 1000;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: white; /* Asegura que el texto sea blanco */
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+header p {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* ================= HERO SECTION (CORREGIDO) ================= */
 .hero {
-    /* Imagen de fondo con un oscurecimiento (overlay) para que se lea el texto */
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)), 
-                url('https://images.unsplash.com/photo-1558981806-ec527fa84f3d?q=80&w=1600&auto=format&fit=crop');
+    /* Imagen de fondo Pexels (más estable) con filtro oscuro */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), 
+                      url('https://images.pexels.com/photos/2116475/pexels-photo-2116475.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
     
-    background-size: cover;       /* La imagen cubre todo el espacio */
-    background-position: center;  /* Centrar la imagen */
-    background-attachment: fixed; /* Efecto Parallax (opcional, se ve genial al bajar) */
+    background-size: cover;       
+    background-position: center;  
+    background-attachment: scroll; /* Cambiado a scroll para evitar problemas en móviles/railway */
     
     color: white;
-    height: 80vh; /* Ocupa el 80% de la altura de la pantalla */
+    height: 80vh; 
     min-height: 500px;
     
-    /* Centrar todo el contenido perfectamente */
     display: flex;
     align-items: center;
     justify-content: center;
