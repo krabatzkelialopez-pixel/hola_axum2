@@ -202,6 +202,121 @@ button:hover, .btn:hover {
 .moto h3, .card h3 { margin-top: 0; font-size: 1.2rem; }
 .price { color: var(--accent); font-weight: bold; font-size: 1.1rem; }
 
+/* --- ESTILOS PARA PÁGINAS INTERNAS (NUEVO) --- */
+
+/* Banner de título para páginas internas */
+.page-banner {
+    background-color: var(--primary); /* Mismo negro del header */
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+    /* Sutil degradado para darle profundidad */
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0.8), var(--primary));
+}
+
+.page-banner h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.page-banner p {
+    opacity: 0.8;
+    margin-top: 10px;
+    font-size: 1.1rem;
+}
+
+/* Breadcrumbs mejorados */
+.breadcrumbs {
+    background: white;
+    padding: 15px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    font-size: 0.9rem;
+}
+
+.breadcrumbs .container {
+    margin: 0 auto; /* Centrar el contenido */
+    padding: 0 20px; /* Márgenes laterales */
+}
+
+.breadcrumbs a { color: var(--text-light); font-weight: 600; }
+.breadcrumbs a:hover { color: var(--accent); }
+.breadcrumbs .separator { margin: 0 10px; color: #ccc; }
+.breadcrumbs strong { color: var(--accent); }
+
+/* Estilo de Tarjeta Unificado (para usar en catálogo) */
+.card-product {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.card-product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+    border-color: var(--accent);
+}
+
+.card-product img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-bottom: 3px solid var(--accent); /* Línea naranja de acento */
+}
+
+.card-content {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-content h3 { margin: 0 0 10px; font-size: 1.3rem; }
+.card-content .price { 
+    display: block; 
+    font-size: 1.25rem; 
+    color: var(--primary); 
+    font-weight: 800; 
+    margin-bottom: 15px;
+}
+.card-content .price span { color: var(--accent); } /* Color para el símbolo $ */
+
+/* Botón de Regresar Elegante */
+.btn-back-container {
+    text-align: center;
+    margin: 50px 0;
+}
+
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 30px;
+    background-color: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    border-radius: 50px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+    background-color: var(--primary);
+    color: white;
+    transform: translateX(-5px); /* Pequeño movimiento al pasar el mouse */
+}
+
+.btn-back span { margin-right: 10px; font-size: 1.2rem; }
+
+
+
 /* --- Forms --- */
 form {
     background: white;

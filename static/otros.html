@@ -3,117 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <title>Scooters y Otros | Axum Motors</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f2f2f2;
-            margin: 0;
-            padding: 40px;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        /* ===== BREADCRUMBS ===== */
-        .breadcrumbs {
-            max-width: 1100px;
-            margin: 0 auto 20px;
-            font-size: 14px;
-        }
-
-        .breadcrumbs a {
-            color: #111;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .breadcrumbs span {
-            margin: 0 6px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            max-width: 1100px;
-            margin: 30px auto;
-        }
-
-        .card {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid #ddd;
-            text-align: center;
-        }
-
-        .card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-        }
-
-        .card h3 {
-            margin: 10px;
-        }
-
-        .back-btn {
-            display: block;
-            width: fit-content;
-            margin: 40px auto;
-            padding: 12px 25px;
-            background: #111;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 16px;
-        }
-
-        .back-btn:hover {
-            background: #333;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
 
-    <!-- ===== BREADCRUMBS ===== -->
-    <nav class="breadcrumbs">
-        <a href="/">Inicio</a>
-        <span>›</span>
-        <a href="/motos.html">Motos del Año</a>
-        <span>›</span>
-        <strong>Scooters y Otros</strong>
-    </nav>
+    <header>
+        <h1>Axum Motors</h1>
+        <p>Venta de motos nuevas y seminuevas</p>
+    </header>
 
-    <h1>🛵 Scooters, Bicicletas y Cuatrimotos</h1>
-
-    <!-- GALERÍA DE OTROS -->
-    <div class="grid">
-        <div class="card">
-            <img src="/uploads/scot12.jpg" alt="Scooter Eléctrico">
-            <h3>Scooter Eléctrico</h3>
-        </div>
-
-        <div class="card">
-            <img src="/uploads/bicielec.jpg" alt="Bicicleta Eléctrica">
-            <h3>Bicicleta Eléctrica</h3>
-        </div>
-
-        <div class="card">
-            <img src="/uploads/cuatri1.jpg" alt="Cuatrimoto 250cc">
-            <h3>Cuatrimoto 250cc</h3>
-        </div>
-
-        <div class="card">
-            <img src="/uploads/cuatrimoto450.jpg" alt="Cuatrimoto 450cc">
-            <h3>Cuatrimoto 450cc</h3>
-        </div>
+    <div class="page-banner">
+        <h1>🛵 Scooters y Alternativas</h1>
+        <p>Movilidad urbana, diversión y aventura off-road.</p>
     </div>
 
-    <!-- BOTÓN REGRESAR -->
-    <a class="back-btn" href="/">⬅ Volver al inicio</a>
+    <nav class="breadcrumbs">
+        <div class="container">
+            <a href="/">Inicio</a>
+            <span class="separator">›</span>
+            <strong>Scooters y Otros</strong>
+        </div>
+    </nav>
+
+    <section>
+        <div class="grid">
+            <div class="card-product">
+                <img src="/uploads/scot12.jpg" alt="Scooter Eléctrico">
+                <div class="card-content">
+                    <h3>Scooter Eléctrico Urbano</h3>
+                    <span class="price"><span>$</span>45,000 MXN</span>
+                    <button class="btn" style="width:100%; margin-top:10px; padding: 10px;">Ver Detalles</button>
+                </div>
+            </div>
+
+            <div class="card-product">
+                <img src="/uploads/bicielec.jpg" alt="Bicicleta Eléctrica">
+                <div class="card-content">
+                    <h3>Bicicleta Eléctrica Pro</h3>
+                    <span class="price"><span>$</span>32,000 MXN</span>
+                    <button class="btn" style="width:100%; margin-top:10px; padding: 10px;">Ver Detalles</button>
+                </div>
+            </div>
+
+            <div class="card-product">
+                <img src="/uploads/cuatri1.jpg" alt="Cuatrimoto 250cc">
+                <div class="card-content">
+                    <h3>Cuatrimoto ATV 250cc</h3>
+                    <span class="price"><span>$</span>85,000 MXN</span>
+                    <button class="btn" style="width:100%; margin-top:10px; padding: 10px;">Ver Detalles</button>
+                </div>
+            </div>
+
+            <div class="card-product">
+                <img src="/uploads/cuatrimoto450.jpg" alt="Cuatrimoto 450cc">
+                <div class="card-content">
+                    <h3>Cuatrimoto Sport 450cc</h3>
+                    <span class="price"><span>$</span>110,000 MXN</span>
+                    <button class="btn" style="width:100%; margin-top:10px; padding: 10px;">Ver Detalles</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="btn-back-container">
+        <a class="btn-back" href="/">
+            <span>←</span> Volver al inicio
+        </a>
+    </div>
+
+    <footer>
+        <p>© 2026 Axum Motors</p>
+    </footer>
 
 </body>
 </html>
