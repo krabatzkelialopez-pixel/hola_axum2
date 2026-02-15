@@ -35,61 +35,83 @@
 </section>
 
 <section id="catalogo">
-    <div style="text-align: center; margin-bottom: 40px;">
+    <div style="text-align: center; margin-bottom: 20px;">
         <h2>Modelos Destacados</h2>
         <p>Nuestra selección premium para esta temporada</p>
     </div>
 
-    <div class="catalogo">
-        <div class="moto">
+    <div style="max-width: 500px; margin: 0 auto 40px auto; position: relative;">
+        <input type="text" id="buscador" placeholder="🔍 Buscar por modelo (ej: Yamaha, Chopper)..." 
+        style="width: 100%; padding: 15px; border-radius: 50px; border: 2px solid #ddd; font-size: 1rem; padding-left: 20px;">
+    </div>
+
+    <div class="catalogo" id="grid-motos">
+        <div class="moto" data-name="yamaha r6 deportiva">
             <img src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=800&q=80" alt="Moto Deportiva">
             <div class="moto-info">
-                <span style="color:#666; font-size:0.85rem; text-transform:uppercase; letter-spacing:1px;">Deportiva • 2024</span>
+                <span style="color:#666; font-size:0.85rem; text-transform:uppercase;">Deportiva • 2024</span>
                 <h3>Yamaha R6 600cc</h3>
                 <p class="price">$245,000 MXN</p>
-                <p style="font-size:0.9rem; color:#555;">Motor de alto rendimiento, ideal para pista y carretera.</p>
-                <button style="width:100%; margin-top:10px;">Ver Detalles</button>
+                <p style="font-size:0.9rem; color:#555;">Motor de alto rendimiento.</p>
+                
+                <a href="/detalle.html?titulo=Yamaha%20R6%20600cc&precio=$245,000&cat=Deportiva&img=https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=800&q=80" 
+                   class="btn" style="width:100%; margin-top:10px; display:block; text-align:center;">
+                   Ver Detalles
+                </a>
             </div>
         </div>
 
-        <div class="moto">
+        <div class="moto" data-name="harley davidson chopper">
             <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=800&q=80" alt="Moto Chopper">
             <div class="moto-info">
-                <span style="color:#666; font-size:0.85rem; text-transform:uppercase; letter-spacing:1px;">Chopper • 2023</span>
+                <span style="color:#666; font-size:0.85rem; text-transform:uppercase;">Chopper • 2023</span>
                 <h3>Harley Davidson Iron</h3>
                 <p class="price">$195,000 MXN</p>
-                <p style="font-size:0.9rem; color:#555;">Estilo clásico con la potencia moderna que necesitas.</p>
-                <button style="width:100%; margin-top:10px;">Ver Detalles</button>
+                <p style="font-size:0.9rem; color:#555;">Estilo clásico y potencia.</p>
+                
+                <a href="/detalle.html?titulo=Harley%20Davidson%20Iron&precio=$195,000&cat=Chopper&img=https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=800&q=80" 
+                   class="btn" style="width:100%; margin-top:10px; display:block; text-align:center;">
+                   Ver Detalles
+                </a>
             </div>
         </div>
 
-        <div class="moto">
+        <div class="moto" data-name="bmw cafe racer custom">
             <img src="https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?w=800&q=80" alt="Moto Cafe Racer">
             <div class="moto-info">
-                <span style="color:#666; font-size:0.85rem; text-transform:uppercase; letter-spacing:1px;">Cafe Racer • Custom</span>
+                <span style="color:#666; font-size:0.85rem; text-transform:uppercase;">Cafe Racer • Custom</span>
                 <h3>BMW R NineT</h3>
                 <p class="price">$280,000 MXN</p>
-                <p style="font-size:0.9rem; color:#555;">Diseño retro con tecnología alemana de punta.</p>
-                <button style="width:100%; margin-top:10px;">Ver Detalles</button>
+                <p style="font-size:0.9rem; color:#555;">Diseño retro alemán.</p>
+                
+                <a href="/detalle.html?titulo=BMW%20R%20NineT&precio=$280,000&cat=Cafe%20Racer&img=https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?w=800&q=80" 
+                   class="btn" style="width:100%; margin-top:10px; display:block; text-align:center;">
+                   Ver Detalles
+                </a>
             </div>
         </div>
     </div>
-
-    <div style="text-align: center; margin-top: 40px;">
-        <a href="/motos.html" class="btn" style="background: transparent; border: 2px solid var(--primary); color: var(--primary);">
-            Ver inventario completo &rarr;
-        </a>
-    </div>
 </section>
 
-<section>
-    <h2>Comparte tu moto</h2>
-    <form action="/upload-image" method="post" enctype="multipart/form-data">
-        <input type="file" name="image" required>
-        <button type="submit">Subir imagen</button>
-        <div id="msg-image" class="msg"></div>
-    </form>
-</section>
+<script>
+// LÓGICA DEL BUSCADOR
+document.getElementById('buscador').addEventListener('keyup', function(e) {
+    const texto = e.target.value.toLowerCase();
+    const motos = document.querySelectorAll('.moto'); // Selecciona todas las tarjetas
+
+    motos.forEach(moto => {
+        const nombre = moto.getAttribute('data-name'); // Busca en el atributo oculto
+        const visible = moto.querySelector('h3').innerText.toLowerCase(); // Busca en el título visible
+        
+        // Si el texto coincide con el data-name o el título, mostramos. Si no, ocultamos.
+        if (nombre.includes(texto) || visible.includes(texto)) {
+            moto.style.display = 'block';
+        } else {
+            moto.style.display = 'none';
+        }
+    });
+});
+</script>
 
 <section>
     <h2>Motos de nuestros clientes</h2>

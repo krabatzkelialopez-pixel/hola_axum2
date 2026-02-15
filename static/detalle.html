@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles de la Moto | Axum Motors</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Estilos específicos para esta página */
+        .detail-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-top: -50px; /* Para que suba un poco sobre el header */
+            position: relative;
+            z-index: 10;
+        }
+
+        .detail-img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .detail-info h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .detail-price {
+            font-size: 2rem;
+            color: var(--accent);
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .spec-item strong { display: block; color: #555; }
+
+        @media (max-width: 768px) {
+            .detail-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Axum Motors</h1>
+    <a href="/" style="color: white; text-decoration: none;">&larr; Volver al Catálogo</a>
+</header>
+
+<div class="container">
+    <div class="detail-container">
+        <div>
+            <img id="moto-img" src="" alt="Moto" class="detail-img">
+        </div>
+
+        <div class="detail-info">
+            <span id="moto-cat" style="background:var(--primary); color:white; padding:5px 10px; border-radius:4px; font-size:0.8rem;">Categoría</span>
+            <h1 id="moto-titulo">Cargando...</h1>
+            <p id="moto-precio" class="detail-price">$0.00</p>
+            
+            <p>Esta motocicleta ofrece el equilibrio perfecto entre rendimiento y estilo. Ideal para quienes buscan aventuras en la carretera o eficiencia en la ciudad. Cuenta con garantía de agencia y servicios al día.</p>
+
+            <div class="specs">
+                <div class="spec-item"><strong>Motor</strong> <span id="moto-motor">4 Tiempos</span></div>
+                <div class="spec-item"><strong>Año</strong> 2024</div>
+                <div class="spec-item"><strong>Transmisión</strong> Manual 6 Vel</div>
+                <div class="spec-item"><strong>Frenos</strong> ABS Doble Canal</div>
+            </div>
+
+            <button class="btn" onclick="alert('¡Gracias por tu interés! Un asesor te contactará.')" style="width: 100%; padding: 15px; font-size: 1.1rem;">
+                Contactar Vendedor
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Lógica para leer los datos de la URL
+    const params = new URLSearchParams(window.location.search);
+
+    // Rellenar la página con los datos que vienen del link
+    document.getElementById('moto-titulo').innerText = params.get('titulo') || 'Modelo Desconocido';
+    document.getElementById('moto-precio').innerText = params.get('precio') || 'Consultar';
+    document.getElementById('moto-cat').innerText = params.get('cat') || 'General';
+    document.getElementById('moto-img').src = params.get('img') || 'https://via.placeholder.com/800';
+    
+    // Cambiar título de la pestaña
+    document.title = params.get('titulo') + " | Axum Motors";
+</script>
+
+</body>
+</html>
