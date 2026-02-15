@@ -152,9 +152,12 @@ async fn upload_image(
 
     tokio::fs::create_dir_all("uploads").await.unwrap();
 
-    while let Some(mut field) = multipart.next_field().await.unwrap() {
+    let mut file_saved = false; // Bandera para saber si realmente guardamos algo
 
-        if field.name() != Some("image") {
+    while let Some(field) = multipart.next_field().await.unwrap() {
+        
+        // CORRECCIÓN AQUÍ: Cambiamos "image" por "file" para coincidir con el HTML
+        if field.name() != Some("file") {
             continue;
         }
 
@@ -167,6 +170,7 @@ async fn upload_image(
             return Html("❌ Tipo de archivo no permitido").into_response();
         }
 
+        // field.bytes() consume el field, así que lo hacemos aquí
         let bytes = field.bytes().await.unwrap();
 
         if bytes.len() > MAX_IMAGE_SIZE {
@@ -183,17 +187,27 @@ async fn upload_image(
         let filename = format!("{}.{}", Uuid::new_v4(), extension);
         let path = format!("uploads/{}", filename);
 
-        let mut file = tokio::fs::File::create(&path).await.unwrap();
-        file.write_all(&bytes).await.unwrap();
+        // Guardar archivo en disco
+        if let Ok(mut file) = tokio::fs::File::create(&path).await {
+            if file.write_all(&bytes).await.is_ok() {
+                // Guardar referencia en BD
+                let insert_result = sqlx::query("INSERT INTO images (filename) VALUES ($1)")
+                    .bind(&filename)
+                    .execute(&pool)
+                    .await;
 
-        sqlx::query("INSERT INTO images (filename) VALUES ($1)")
-            .bind(&filename)
-            .execute(&pool)
-            .await
-            .unwrap();
+                if insert_result.is_ok() {
+                    file_saved = true;
+                }
+            }
+        }
     }
 
-    Html("✅ Imagen subida correctamente").into_response()
+    if file_saved {
+        Html("✅ Imagen subida correctamente").into_response()
+    } else {
+        Html("❌ No se pudo guardar la imagen (Error interno o campo incorrecto)").into_response()
+    }
 }
 
 /* ---------- LISTAR ---------- */
