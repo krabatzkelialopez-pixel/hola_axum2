@@ -23,29 +23,89 @@ body {
 }
 
 /* --- Header & Hero --- */
-header {
-    background: var(--primary);
-    color: white;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
-
-header h1 { margin: 0; font-size: 1.5rem; letter-spacing: -1px; }
-
+/* ================= HERO SECTION (NUEVO) ================= */
 .hero {
-    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/uploads/banner-bg.jpg'); /* Opcional: pon una imagen de fondo real */
-    background-color: #000;
-    background-size: cover;
+    /* Imagen de fondo con un oscurecimiento (overlay) para que se lea el texto */
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)), 
+                url('https://images.unsplash.com/photo-1558981806-ec527fa84f3d?q=80&w=1600&auto=format&fit=crop');
+    
+    background-size: cover;       /* La imagen cubre todo el espacio */
+    background-position: center;  /* Centrar la imagen */
+    background-attachment: fixed; /* Efecto Parallax (opcional, se ve genial al bajar) */
+    
     color: white;
-    padding: 100px 20px;
+    height: 80vh; /* Ocupa el 80% de la altura de la pantalla */
+    min-height: 500px;
+    
+    /* Centrar todo el contenido perfectamente */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
+    
     margin-bottom: 40px;
+    position: relative;
 }
 
-.hero h2 { font-size: 3rem; margin-bottom: 10px; }
+.hero-content {
+    max-width: 800px;
+    padding: 20px;
+    animation: fadeIn 1.5s ease-out; /* Pequeña animación de entrada */
+}
+
+.hero h2 {
+    font-size: 3.5rem; /* Letra mucho más grande */
+    margin-bottom: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.1;
+    letter-spacing: 1px;
+}
+
+/* Color naranja para la palabra "Potencia" */
+.highlight {
+    color: var(--accent);
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+/* ================= BOTÓN HERO (NUEVO) ================= */
+.btn-hero {
+    background: var(--accent);
+    color: white;
+    padding: 15px 40px;
+    border-radius: 50px; /* Bordes totalmente redondos */
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+}
+
+.btn-hero:hover {
+    background: #d35400; /* Un naranja un poco más oscuro al pasar el mouse */
+    transform: translateY(-3px); /* El botón sube un poco */
+    box-shadow: 0 8px 25px rgba(230, 126, 34, 0.6);
+}
+
+/* Animación simple de aparición */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ajuste para móviles */
+@media (max-width: 768px) {
+    .hero h2 { font-size: 2.2rem; }
+    .hero { height: 60vh; }
+}
 
 /* --- Layout --- */
 section, .container {
