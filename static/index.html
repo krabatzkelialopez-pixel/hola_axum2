@@ -5,9 +5,7 @@
     <title>Venta de Motos | Axum Motors</title>
     
     <link rel="stylesheet" href="/css/styles.css">
-
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
@@ -53,11 +51,8 @@
                 <h3>Yamaha R6 600cc</h3>
                 <p class="price">$245,000 MXN</p>
                 <p style="font-size:0.9rem; color:#555;">Motor de alto rendimiento.</p>
-                
                 <a href="/detalle.html?titulo=Yamaha%20R6%20600cc&precio=$245,000&cat=Deportiva&img=https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=800&q=80" 
-                   class="btn" style="width:100%; margin-top:10px; display:block; text-align:center;">
-                   Ver Detalles
-                </a>
+                   class="btn" style="width:100%; margin-top:10px; display:block; text-align:center;">Ver Detalles</a>
             </div>
         </div>
 
@@ -68,11 +63,8 @@
                 <h3>Harley Davidson Iron</h3>
                 <p class="price">$195,000 MXN</p>
                 <p style="font-size:0.9rem; color:#555;">Estilo clásico y potencia.</p>
-                
                 <a href="/detalle.html?titulo=Harley%20Davidson%20Iron&precio=$195,000&cat=Chopper&img=https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=800&q=80" 
-                   class="btn" style="width:100%; margin-top:10px; display:block; text-align:center;">
-                   Ver Detalles
-                </a>
+                   class="btn" style="width:100%; margin-top:10px; display:block; text-align:center;">Ver Detalles</a>
             </div>
         </div>
 
@@ -83,35 +75,24 @@
                 <h3>BMW R NineT</h3>
                 <p class="price">$280,000 MXN</p>
                 <p style="font-size:0.9rem; color:#555;">Diseño retro alemán.</p>
-                
                 <a href="/detalle.html?titulo=BMW%20R%20NineT&precio=$280,000&cat=Cafe%20Racer&img=https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?w=800&q=80" 
-                   class="btn" style="width:100%; margin-top:10px; display:block; text-align:center;">
-                   Ver Detalles
-                </a>
+                   class="btn" style="width:100%; margin-top:10px; display:block; text-align:center;">Ver Detalles</a>
             </div>
         </div>
     </div>
 </section>
 
-<script>
-// LÓGICA DEL BUSCADOR
-document.getElementById('buscador').addEventListener('keyup', function(e) {
-    const texto = e.target.value.toLowerCase();
-    const motos = document.querySelectorAll('.moto'); // Selecciona todas las tarjetas
-
-    motos.forEach(moto => {
-        const nombre = moto.getAttribute('data-name'); // Busca en el atributo oculto
-        const visible = moto.querySelector('h3').innerText.toLowerCase(); // Busca en el título visible
-        
-        // Si el texto coincide con el data-name o el título, mostramos. Si no, ocultamos.
-        if (nombre.includes(texto) || visible.includes(texto)) {
-            moto.style.display = 'block';
-        } else {
-            moto.style.display = 'none';
-        }
-    });
-});
-</script>
+<section>
+    <h2>📸 Comparte tu pasión</h2>
+    <p style="text-align: center; margin-bottom: 20px;">Sube una foto de tu moto para que aparezca en nuestra galería.</p>
+    
+    <form action="/upload-image" method="post" enctype="multipart/form-data" style="max-width: 500px; margin: 0 auto; background: #f9f9f9; padding: 20px; border-radius: 10px;">
+        <label for="file" style="display: block; margin-bottom: 10px; font-weight: bold;">Selecciona una imagen:</label>
+        <input type="file" name="file" accept="image/*" required style="margin-bottom: 15px; width: 100%;">
+        <button type="submit" style="width: 100%;">Subir Foto a Galería</button>
+        <div id="msg-image" class="msg" style="margin-top: 10px;"></div>
+    </form>
+</section>
 
 <section>
     <h2>Motos de nuestros clientes</h2>
@@ -151,28 +132,48 @@ document.getElementById('buscador').addEventListener('keyup', function(e) {
 </footer>
 
 <script>
+// LÓGICA DEL BUSCADOR
+document.getElementById('buscador').addEventListener('keyup', function(e) {
+    const texto = e.target.value.toLowerCase();
+    const motos = document.querySelectorAll('.moto'); 
+
+    motos.forEach(moto => {
+        const nombre = moto.getAttribute('data-name'); 
+        const visible = moto.querySelector('h3').innerText.toLowerCase(); 
+        
+        if (nombre.includes(texto) || visible.includes(texto)) {
+            moto.style.display = 'block';
+        } else {
+            moto.style.display = 'none';
+        }
+    });
+});
+
 /* SUBIR IMAGEN */
 document.querySelector("form[action='/upload-image']")
 .addEventListener("submit", async e => {
     e.preventDefault();
-    const msgDiv = document.getElementById("msg-image"); // Referencia al div
+    const msgDiv = document.getElementById("msg-image"); 
     const res = await fetch("/upload-image", { method: "POST", body: new FormData(e.target) });
 
     if (!res.ok) {
         msgDiv.innerText = "❌ Error en servidor";
-        msgDiv.className = "msg error"; // Clase CSS para rojo
+        msgDiv.className = "msg error"; 
         return;
     }
 
     msgDiv.innerText = await res.text();
-    msgDiv.className = "msg success"; // Clase CSS para verde
+    msgDiv.className = "msg success"; 
+    
+    // Recargar galería automáticamente después de subir
+    setTimeout(loadImages, 1000);
 });
 
 /* ENVIAR MENSAJE */
 document.querySelector("form[action='/enviar']")
 .addEventListener("submit", async e => {
     e.preventDefault();
-    const msgDiv = document.getElementById("msg-form"); // Referencia al div
+    const msgDiv = document.getElementById("msg-form"); 
 
     const form = e.target;
     const formData = new FormData(form);
@@ -215,7 +216,6 @@ async function loadImages() {
     images.forEach(img => {
         const div = document.createElement("div");
         div.className = "moto";
-        // Añadí la estructura interna para mantener consistencia visual
         div.innerHTML = `<img src="/uploads/${img.filename}">`;
         gallery.appendChild(div);
     });
@@ -249,9 +249,7 @@ async function cargarMensajes() {
     });
 }
 
-/* ===== NUEVO: EDITAR ===== */
 async function editarMensaje(id, nombre, mensaje) {
-
     const nuevoNombre = prompt("Nuevo nombre:", nombre);
     const nuevoMensaje = prompt("Nuevo mensaje:", mensaje);
 
@@ -263,9 +261,7 @@ async function editarMensaje(id, nombre, mensaje) {
 
     const res = await fetch(`/mensajes/${id}`, {
         method: "PUT",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: formData
     });
 
