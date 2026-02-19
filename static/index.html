@@ -2,202 +2,296 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Axum Motors</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venta de Motos | Axum Motors</title>
+    
     <link rel="stylesheet" href="/css/styles.css">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+
 <body>
 
-    <header>
-        <a href="/" class="logo-container">
-            <img src="/img/logo.png" alt="Axum Motors Logo" class="site-logo">
-        </a>
-        <p>Venta de motos nuevas y seminuevas</p>
-    </header>
-
-    <div class="hero">
-        <div class="hero-content">
-            <h2>Siente la <span class="highlight">Potencia</span></h2>
-            <p>Descubre nuestra nueva colección 2026 con financiamiento exclusivo.</p>
-            <a href="/motos.html" class="btn-hero">Ver Catálogo</a>
-        </div>
-    </div>
-
-    <section id="catalogo">
-        <h2>🔥 Modelos Destacados</h2>
-        <div class="catalogo">
-            <div class="moto">
-                <img src="/uploads/mo1.jpg" alt="Moto 1">
-                <div class="moto-info">
-                    <h3>Deportiva 1000cc</h3>
-                    <p>Velocidad y aerodinámica pura.</p>
-                    <span class="price">$245,000</span>
-                    <br><br>
-                    <a href="/motos.html" class="btn">Ver Más</a>
-                </div>
-            </div>
-            <div class="moto">
-                <img src="/uploads/scot12.jpg" alt="Scooter">
-                <div class="moto-info">
-                    <h3>Scooter Urbano</h3>
-                    <p>Ideal para la ciudad y el tráfico.</p>
-                    <span class="price">$45,000</span>
-                    <br><br>
-                    <a href="/otros.html" class="btn">Ver Más</a>
-                </div>
-            </div>
-            <div class="moto">
-                <img src="/uploads/nk1.jpg" alt="Naked">
-                <div class="moto-info">
-                    <h3>Naked 900cc</h3>
-                    <p>Estilo agresivo y manejo cómodo.</p>
-                    <span class="price">$195,000</span>
-                    <br><br>
-                    <a href="/motos.html" class="btn">Ver Más</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <h2>📸 Motos de nuestros clientes</h2>
-        
-        <form id="uploadForm" enctype="multipart/form-data" style="margin-bottom: 20px;">
-            <h3>Sube tu foto</h3>
-            <input type="file" name="file" accept="image/*" required>
-            <button type="submit">Subir Foto</button>
-            <div id="uploadMsg" class="msg"></div>
-        </form>
-
-        <div class="grid" id="gallery">
-            </div>
-    </section>
-
-    <section id="contacto">
-        <h2>📩 Contáctanos</h2>
-        <form id="contactForm">
-            <label>Nombre:</label>
-            <input type="text" name="nombre" required placeholder="Tu nombre">
-            
-            <label>Mensaje:</label>
-            <textarea name="mensaje" rows="4" required placeholder="Escribe tu consulta..."></textarea>
-            
-            <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
-            
-            <button type="submit" style="margin-top:15px;">Enviar Mensaje</button>
-            <div id="statusMsg" class="msg"></div>
-        </form>
-    </section>
-
-    <a href="https://wa.me/525512345678?text=Hola,%20vi%20una%20moto%20en%20Axum%20Motors%20y%20me%20interesa..." 
-    class="btn-wsp" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+<header>
+    <a href="/" class="logo-container">
+        <img src="/uploads/Logo.png" alt="Axum Motors Logo" class="site-logo">
     </a>
+    
+    <p>Venta de motos nuevas y seminuevas</p>
+</header>
 
-    <div id="lightbox" class="lightbox" onclick="cerrarLightbox()">
-        <span class="close-lightbox">&times;</span>
-        <img class="lightbox-content" id="img-grande">
+<div class="hero">
+    <div class="hero-content">
+        <h2><span class="highlight">Potencia</span>, diseño y velocidad</h2>
+        <p>Encuentra la moto perfecta para ti</p>
+        <a href="#catalogo" class="btn-hero">VER CATÁLOGO</a>
+    </div>
+</div>
+
+<section>
+    <h2>Explorar categorías</h2>
+    <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+        <a href="/motos.html"><button>Motos del Año</button></a>
+        <a href="/otros.html"><button>Scooters, Bicicletas y Cuatrimoto</button></a>
+    </div>
+</section>
+
+<section id="catalogo">
+    <div style="text-align: center; margin-bottom: 20px;">
+        <h2>Modelos Destacados</h2>
+        <p>Nuestra selección premium para esta temporada</p>
     </div>
 
-    <footer>
-        <p>© 2026 Axum Motors</p>
-        <br>
-        <a href="/admin" style="color: #444; font-size: 0.8rem; text-decoration: none;">Acceso Personal</a>
-    </footer>
+    <div style="max-width: 500px; margin: 0 auto 40px auto; position: relative;">
+        <input type="text" id="buscador" placeholder="🔍 Buscar por modelo (ej: Yamaha, Chopper)..." 
+        style="width: 100%; padding: 15px; border-radius: 50px; border: 2px solid #ddd; font-size: 1rem; padding-left: 20px;">
+    </div>
 
-    <script>
-        // --- Formulario Contacto ---
-        document.getElementById("contactForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            const msgDiv = document.getElementById("statusMsg");
-            
-            // Convertir FormData a URLSearchParams para x-www-form-urlencoded
-            const params = new URLSearchParams();
-            for(const pair of formData) {
-                params.append(pair[0], pair[1]);
-            }
+    <div class="catalogo" id="grid-motos">
+        <div class="moto" data-name="yamaha r6 deportiva">
+            <img src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=800&q=80" alt="Moto Deportiva">
+            <div class="moto-info">
+                <span style="color:#666; font-size:0.85rem; text-transform:uppercase;">Deportiva • 2024</span>
+                <h3>Yamaha R6 600cc</h3>
+                <p class="price">$245,000 MXN</p>
+                <p style="font-size:0.9rem; color:#555;">Motor de alto rendimiento.</p>
+                <a href="/detalle.html?titulo=Yamaha%20R6%20600cc&precio=$245,000&cat=Deportiva&img=https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=800&q=80" 
+                   class="btn" style="width:100%; margin-top:10px; display:block; text-align:center;">Ver Detalles</a>
+            </div>
+        </div>
 
-            try {
-                const res = await fetch("/enviar", {
-                    method: "POST",
-                    body: params
-                });
-                const text = await res.text();
-                
-                msgDiv.innerHTML = text;
-                msgDiv.className = text.includes("✅") ? "msg success" : "msg error";
-                
-                if (text.includes("✅")) e.target.reset(); // Limpiar si fue exitoso
-                
-            } catch (err) {
-                msgDiv.innerText = "Error de conexión";
-                msgDiv.className = "msg error";
-            }
-        });
+        <div class="moto" data-name="harley davidson chopper">
+            <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=800&q=80" alt="Moto Chopper">
+            <div class="moto-info">
+                <span style="color:#666; font-size:0.85rem; text-transform:uppercase;">Chopper • 2023</span>
+                <h3>Harley Davidson Iron</h3>
+                <p class="price">$195,000 MXN</p>
+                <p style="font-size:0.9rem; color:#555;">Estilo clásico y potencia.</p>
+                <a href="/detalle.html?titulo=Harley%20Davidson%20Iron&precio=$195,000&cat=Chopper&img=https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=800&q=80" 
+                   class="btn" style="width:100%; margin-top:10px; display:block; text-align:center;">Ver Detalles</a>
+            </div>
+        </div>
 
-        // --- Subida de Imágenes ---
-        document.getElementById("uploadForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            const msgDiv = document.getElementById("uploadMsg");
+        <div class="moto" data-name="bmw cafe racer custom">
+            <img src="https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?w=800&q=80" alt="Moto Cafe Racer">
+            <div class="moto-info">
+                <span style="color:#666; font-size:0.85rem; text-transform:uppercase;">Cafe Racer • Custom</span>
+                <h3>BMW R NineT</h3>
+                <p class="price">$280,000 MXN</p>
+                <p style="font-size:0.9rem; color:#555;">Diseño retro alemán.</p>
+                <a href="/detalle.html?titulo=BMW%20R%20NineT&precio=$280,000&cat=Cafe%20Racer&img=https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?w=800&q=80" 
+                   class="btn" style="width:100%; margin-top:10px; display:block; text-align:center;">Ver Detalles</a>
+            </div>
+        </div>
+    </div>
+</section>
 
-            try {
-                const res = await fetch("/upload-image", {
-                    method: "POST",
-                    body: formData
-                });
-                
-                // Si el servidor devuelve HTML (como en tu código Rust actual)
-                const text = await res.text(); 
-                
-                msgDiv.innerHTML = text;
-                msgDiv.className = text.includes("✅") ? "msg success" : "msg error";
+<section>
+    <h2>📸 Comparte tu pasión</h2>
+    <p style="text-align: center; margin-bottom: 20px;">Sube una foto de tu moto para que aparezca en nuestra galería.</p>
+    
+    <form action="/upload-image" method="post" enctype="multipart/form-data" style="max-width: 500px; margin: 0 auto; background: #f9f9f9; padding: 20px; border-radius: 10px;">
+        <label for="file" style="display: block; margin-bottom: 10px; font-weight: bold;">Selecciona una imagen:</label>
+        <input type="file" name="file" accept="image/*" required style="margin-bottom: 15px; width: 100%;">
+        <button type="submit" style="width: 100%;">Subir Foto a Galería</button>
+        <div id="msg-image" class="msg" style="margin-top: 10px;"></div>
+    </form>
+</section>
 
-                if (text.includes("✅")) {
-                    e.target.reset();
-                    loadImages(); // Recargar galería
-                }
-            } catch (err) {
-                msgDiv.innerText = "Error subiendo imagen";
-                msgDiv.className = "msg error";
-            }
-        });
+<section>
+    <h2>Motos de nuestros clientes</h2>
+    <div id="gallery" class="catalogo"></div>
+</section>
 
-        // --- Cargar Galería y Lightbox ---
-        async function loadImages() {
-            const res = await fetch("/images");
-            if (!res.ok) return;
+<section>
+    <h2>Contáctanos</h2>
+    <form action="/enviar" method="post">
+        <input type="text" name="nombre" placeholder="Nombre completo" required>
+        <textarea name="mensaje" placeholder="Mensaje" required></textarea>
+        <div class="g-recaptcha" data-sitekey="6Lf0A00sAAAAALUJlTs6O9l1a93nyfUyvs-yBQlQ"></div>
+        <button type="submit">Enviar mensaje</button>
+        <div id="msg-form" class="msg"></div>
+    </form>
+</section>
 
-            const images = await res.json();
-            const gallery = document.getElementById("gallery");
-            gallery.innerHTML = "";
+<section>
+    <h2>📋 Panel de Mensajes (Admin)</h2>
+    <div style="overflow-x:auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Mensaje</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="mensajes-table"></tbody>
+        </table>
+    </div>
+</section>
 
-            images.forEach(img => {
-                const div = document.createElement("div");
-                div.className = "moto";
-                // Añadimos onclick para abrir el lightbox
-                div.innerHTML = `<img src="/uploads/${img.filename}" 
-                    onclick="abrirLightbox('/uploads/${img.filename}')" 
-                    style="cursor:pointer">`;
-                gallery.appendChild(div);
-            });
+<footer>
+    <p>© 2026 Axum Motors</p>
+</footer>
+
+<script>
+// LÓGICA DEL BUSCADOR
+document.getElementById('buscador').addEventListener('keyup', function(e) {
+    const texto = e.target.value.toLowerCase();
+    const motos = document.querySelectorAll('.moto'); 
+
+    motos.forEach(moto => {
+        const nombre = moto.getAttribute('data-name'); 
+        const visible = moto.querySelector('h3').innerText.toLowerCase(); 
+        
+        if (nombre.includes(texto) || visible.includes(texto)) {
+            moto.style.display = 'block';
+        } else {
+            moto.style.display = 'none';
         }
+    });
+});
 
-        function abrirLightbox(src) {
-            const lightbox = document.getElementById("lightbox");
-            const imgGrande = document.getElementById("img-grande");
-            lightbox.style.display = "block";
-            imgGrande.src = src;
-        }
+/* SUBIR IMAGEN */
+document.querySelector("form[action='/upload-image']")
+.addEventListener("submit", async e => {
+    e.preventDefault();
+    const msgDiv = document.getElementById("msg-image"); 
+    const res = await fetch("/upload-image", { method: "POST", body: new FormData(e.target) });
 
-        function cerrarLightbox() {
-            document.getElementById("lightbox").style.display = "none";
-        }
+    if (!res.ok) {
+        msgDiv.innerText = "❌ Error en servidor";
+        msgDiv.className = "msg error"; 
+        return;
+    }
 
-        // Iniciar
-        loadImages();
-    </script>
+    msgDiv.innerText = await res.text();
+    msgDiv.className = "msg success"; 
+    
+    // Recargar galería automáticamente después de subir
+    setTimeout(loadImages, 1000);
+});
+
+/* ENVIAR MENSAJE */
+document.querySelector("form[action='/enviar']")
+.addEventListener("submit", async e => {
+    e.preventDefault();
+    const msgDiv = document.getElementById("msg-form"); 
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    if (!formData.get("g-recaptcha-response")) {
+        msgDiv.innerText = "❌ Completa el reCAPTCHA";
+        msgDiv.className = "msg error";
+        return;
+    }
+
+    const urlEncoded = new URLSearchParams(formData);
+
+    const res = await fetch("/enviar", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: urlEncoded
+    });
+
+    if (!res.ok) {
+        msgDiv.innerText = "❌ Error en servidor";
+        msgDiv.className = "msg error";
+        return;
+    }
+
+    msgDiv.innerText = await res.text();
+    msgDiv.className = "msg success";
+});
+
+/* GALERÍA */
+async function loadImages() {
+    const res = await fetch("/images");
+    if (!res.ok) return;
+
+    const images = await res.json();
+    const gallery = document.getElementById("gallery");
+    gallery.innerHTML = "";
+
+    images.forEach(img => {
+        const div = document.createElement("div");
+        div.className = "moto";
+        div.innerHTML = `<img src="/uploads/${img.filename}">`;
+        gallery.appendChild(div);
+    });
+}
+loadImages();
+
+/* ===== CRUD ADMIN ===== */
+async function cargarMensajes() {
+    const res = await fetch("/mensajes");
+    if (!res.ok) return;
+
+    const mensajes = await res.json();
+    const tbody = document.getElementById("mensajes-table");
+    tbody.innerHTML = "";
+
+    mensajes.forEach(m => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${m.id}</td>
+            <td>${m.nombre}</td>
+            <td>${m.mensaje}</td>
+            <td>
+                <button onclick="editarMensaje(${m.id}, '${m.nombre}', '${m.mensaje}')" 
+                style="background:var(--accent);color:white;margin-right:5px;">✏️</button>
+
+                <button onclick="eliminarMensaje(${m.id})" 
+                style="background:#c0392b;color:white;">🗑</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+async function editarMensaje(id, nombre, mensaje) {
+    const nuevoNombre = prompt("Nuevo nombre:", nombre);
+    const nuevoMensaje = prompt("Nuevo mensaje:", mensaje);
+
+    if (!nuevoNombre || !nuevoMensaje) return;
+
+    const formData = new URLSearchParams();
+    formData.append("nombre", nuevoNombre);
+    formData.append("mensaje", nuevoMensaje);
+
+    const res = await fetch(`/mensajes/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData
+    });
+
+    if (!res.ok) {
+        alert("❌ Error al actualizar");
+        return;
+    }
+
+    alert(await res.text());
+    cargarMensajes();
+}
+
+async function eliminarMensaje(id) {
+    if (!confirm("¿Eliminar mensaje?")) return;
+    const res = await fetch(`/mensajes/${id}`, { method: "DELETE" });
+
+    if (!res.ok) {
+        alert("❌ Error al eliminar");
+        return;
+    }
+
+    alert(await res.text());
+    cargarMensajes();
+}
+
+cargarMensajes();
+</script>
+
 </body>
 </html>

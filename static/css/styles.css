@@ -1,3 +1,5 @@
+/* static/css/styles.css */
+
 :root {
     --primary: #111111;       /* Negro profundo */
     --accent: #e67e22;        /* Naranja motor */
@@ -20,20 +22,36 @@ body {
     line-height: 1.6;
 }
 
-/* --- Header & Logo --- */
+/* --- Header & Hero --- */
+
 header {
-    background-color: var(--primary);
+    background-color: var(--primary); /* Fondo negro para la barra */
     color: white;
-    padding: 15px 20px;
+    padding: 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Separa Logo y Texto a los extremos */
     align-items: center;
     box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    position: sticky;
+    position: sticky; /* Se queda pegado arriba al bajar */
     top: 0;
     z-index: 1000;
 }
 
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: white; /* Asegura que el texto sea blanco */
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+header p {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* ================= NUEVO: ESTILOS PARA EL LOGO ================= */
 .logo-container {
     display: flex;
     align-items: center;
@@ -41,37 +59,37 @@ header {
 }
 
 .site-logo {
-    height: 60px; /* Ajuste para que no sea gigante */
-    width: auto;
+    height: 70px; /* Tamaño del logo */
+    width: auto;  /* Mantiene proporción */
     display: block;
     transition: transform 0.3s ease;
 }
 
 .site-logo:hover {
-    transform: scale(1.05);
+    transform: scale(1.05); /* Zoom al pasar el mouse */
 }
+/* =============================================================== */
 
-header p {
-    margin: 0;
-    font-size: 0.9rem;
-    opacity: 0.8;
-    text-align: right;
-}
 
-/* --- Hero Section --- */
+/* ================= HERO SECTION (CORREGIDO) ================= */
 .hero {
+    /* Imagen de fondo Pexels (más estable) con filtro oscuro */
     background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), 
                       url('https://images.pexels.com/photos/2116475/pexels-photo-2116475.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+    
     background-size: cover;       
     background-position: center;  
-    background-attachment: scroll;
+    background-attachment: scroll; /* Cambiado a scroll para evitar problemas en móviles/railway */
+    
     color: white;
     height: 80vh; 
     min-height: 500px;
+    
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
+    
     margin-bottom: 40px;
     position: relative;
 }
@@ -79,11 +97,11 @@ header p {
 .hero-content {
     max-width: 800px;
     padding: 20px;
-    animation: fadeIn 1.5s ease-out;
+    animation: fadeIn 1.5s ease-out; /* Pequeña animación de entrada */
 }
 
 .hero h2 {
-    font-size: 3.5rem;
+    font-size: 3.5rem; /* Letra mucho más grande */
     margin-bottom: 10px;
     font-weight: 800;
     text-transform: uppercase;
@@ -91,7 +109,10 @@ header p {
     letter-spacing: 1px;
 }
 
-.highlight { color: var(--accent); }
+/* Color naranja para la palabra "Potencia" */
+.highlight {
+    color: var(--accent);
+}
 
 .hero p {
     font-size: 1.2rem;
@@ -100,11 +121,12 @@ header p {
     font-weight: 300;
 }
 
+/* ================= BOTÓN HERO (NUEVO) ================= */
 .btn-hero {
     background: var(--accent);
     color: white;
     padding: 15px 40px;
-    border-radius: 50px;
+    border-radius: 50px; /* Bordes totalmente redondos */
     font-size: 1rem;
     font-weight: bold;
     text-transform: uppercase;
@@ -115,22 +137,24 @@ header p {
 }
 
 .btn-hero:hover {
-    background: #d35400;
-    transform: translateY(-3px);
+    background: #d35400; /* Un naranja un poco más oscuro al pasar el mouse */
+    transform: translateY(-3px); /* El botón sube un poco */
     box-shadow: 0 8px 25px rgba(230, 126, 34, 0.6);
 }
 
+/* Animación simple de aparición */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* Ajuste para móviles */
 @media (max-width: 768px) {
     .hero h2 { font-size: 2.2rem; }
     .hero { height: 60vh; }
 }
 
-/* --- Layout General --- */
+/* --- Layout --- */
 section, .container {
     max-width: 1200px;
     margin: 40px auto;
@@ -144,7 +168,7 @@ h2 {
     color: var(--primary);
 }
 
-/* --- Botones Genéricos --- */
+/* --- Botones --- */
 button, .btn {
     background: var(--primary);
     color: white;
@@ -164,65 +188,49 @@ button:hover, .btn:hover {
     box-shadow: 0 5px 15px rgba(230, 126, 34, 0.4);
 }
 
-/* --- Grid & Cards (Inicio y Catálogo) --- */
+/* --- Cards / Grid --- */
 .catalogo, .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 30px;
 }
 
-.moto, .card, .card-product {
+.moto, .card {
     background: var(--card-bg);
     border-radius: var(--radius);
     overflow: hidden;
     box-shadow: var(--shadow);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease;
     border: 1px solid rgba(0,0,0,0.05);
-    display: flex;
-    flex-direction: column;
 }
 
-.moto:hover, .card:hover, .card-product:hover {
+.moto:hover, .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.15);
-    border-color: var(--accent);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
 }
 
-.moto img, .card img, .card-product img {
+.moto img, .card img {
     width: 100%;
-    height: 220px;
+    height: 200px;
     object-fit: cover;
-    border-bottom: 3px solid var(--accent);
 }
 
 .moto-info, .card-content {
     padding: 20px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 }
 
-.moto h3, .card h3, .card-content h3 { 
-    margin: 0 0 10px; 
-    font-size: 1.3rem; 
-}
+.moto h3, .card h3 { margin-top: 0; font-size: 1.2rem; }
+.price { color: var(--accent); font-weight: bold; font-size: 1.1rem; }
 
-.price { 
-    display: block; 
-    font-size: 1.25rem; 
-    color: var(--primary); 
-    font-weight: 800; 
-    margin-bottom: 15px;
-}
-.price span { color: var(--accent); } /* Color para símbolo $ */
+/* --- ESTILOS PARA PÁGINAS INTERNAS (NUEVO) --- */
 
-/* --- Estilos para Páginas Internas (Banner) --- */
+/* Banner de título para páginas internas */
 .page-banner {
-    background-color: var(--primary);
+    background-color: var(--primary); /* Mismo negro del header */
     color: white;
     padding: 40px 20px;
     text-align: center;
+    /* Sutil degradado para darle profundidad */
     background-image: linear-gradient(to bottom, rgba(0,0,0,0.8), var(--primary));
 }
 
@@ -233,23 +241,79 @@ button:hover, .btn:hover {
     letter-spacing: 1px;
 }
 
-.page-banner p { opacity: 0.8; margin-top: 10px; font-size: 1.1rem; }
+.page-banner p {
+    opacity: 0.8;
+    margin-top: 10px;
+    font-size: 1.1rem;
+}
 
-/* --- Breadcrumbs --- */
+/* Breadcrumbs mejorados */
 .breadcrumbs {
     background: white;
     padding: 15px 0;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     font-size: 0.9rem;
-    margin-bottom: 20px;
 }
-.breadcrumbs .container { margin: 0 auto; padding: 0 20px; }
-.breadcrumbs a { color: var(--text-light); font-weight: 600; text-decoration: none;}
-.breadcrumbs a:hover { color: var(--accent); }
-.separator { margin: 0 10px; color: #ccc; }
 
-/* --- Botón Volver --- */
-.btn-back-container { text-align: center; margin: 50px 0; }
+.breadcrumbs .container {
+    margin: 0 auto; /* Centrar el contenido */
+    padding: 0 20px; /* Márgenes laterales */
+}
+
+.breadcrumbs a { color: var(--text-light); font-weight: 600; }
+.breadcrumbs a:hover { color: var(--accent); }
+.breadcrumbs .separator { margin: 0 10px; color: #ccc; }
+.breadcrumbs strong { color: var(--accent); }
+
+/* Estilo de Tarjeta Unificado (para usar en catálogo) */
+.card-product {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.card-product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+    border-color: var(--accent);
+}
+
+.card-product img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-bottom: 3px solid var(--accent); /* Línea naranja de acento */
+}
+
+.card-content {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-content h3 { margin: 0 0 10px; font-size: 1.3rem; }
+.card-content .price { 
+    display: block; 
+    font-size: 1.25rem; 
+    color: var(--primary); 
+    font-weight: 800; 
+    margin-bottom: 15px;
+}
+.card-content .price span { color: var(--accent); } /* Color para el símbolo $ */
+
+/* Botón de Regresar Elegante */
+.btn-back-container {
+    text-align: center;
+    margin: 50px 0;
+}
+
 .btn-back {
     display: inline-flex;
     align-items: center;
@@ -262,14 +326,18 @@ button:hover, .btn:hover {
     text-decoration: none;
     transition: all 0.3s ease;
 }
+
 .btn-back:hover {
     background-color: var(--primary);
     color: white;
-    transform: translateX(-5px);
+    transform: translateX(-5px); /* Pequeño movimiento al pasar el mouse */
 }
+
 .btn-back span { margin-right: 10px; font-size: 1.2rem; }
 
-/* --- Formularios --- */
+
+
+/* --- Forms --- */
 form {
     background: white;
     padding: 30px;
@@ -295,7 +363,7 @@ input:focus, textarea:focus {
     border-color: var(--accent);
 }
 
-/* --- Mensajes --- */
+/* --- Mensajes y Utilidades --- */
 .msg {
     margin-top: 15px;
     padding: 10px;
@@ -306,58 +374,7 @@ input:focus, textarea:focus {
 .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
 .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
 
-/* --- Lightbox --- */
-.lightbox {
-    display: none; 
-    position: fixed; 
-    z-index: 2000; 
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    background-color: rgba(0,0,0,0.9); 
-}
-.lightbox-content {
-    margin: auto;
-    display: block;
-    width: 80%;
-    max-width: 700px;
-    margin-top: 5%;
-    border-radius: 5px;
-    animation: zoom 0.6s;
-}
-@keyframes zoom { from {transform:scale(0)} to {transform:scale(1)} }
-.close-lightbox {
-    position: absolute;
-    top: 15px;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* --- Botón WhatsApp --- */
-.btn-wsp {
-    position: fixed;
-    width: 60px;
-    height: 60px;
-    bottom: 30px;
-    right: 30px;
-    background-color: #25d366;
-    color: #FFF;
-    border-radius: 50px;
-    box-shadow: 2px 2px 3px #999;
-    z-index: 100;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.btn-wsp:hover { transform: scale(1.1); background-color: #128c7e; }
-.btn-wsp img { width: 35px; height: 35px; filter: invert(1); }
-
-/* --- ADMIN & PAGINACIÓN (NUEVO) --- */
+/* --- Tabla Admin --- */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -365,48 +382,17 @@ table {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: var(--shadow);
-    margin-bottom: 20px;
 }
 th { background: var(--primary); color: white; padding: 15px; text-align: left; }
 td { padding: 15px; border-bottom: 1px solid #eee; }
 tr:last-child td { border-bottom: none; }
 
-/* Controles Paginación */
-.pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin-top: 20px;
-}
-.btn-page {
-    padding: 8px 16px;
-    background: var(--primary);
-    color: white;
-    border-radius: 4px;
-    text-decoration: none;
-    cursor: pointer;
-    border: none;
+/* --- Breadcrumbs (legacy support) --- */
+.breadcrumbs {
+    padding: 20px 0;
     font-size: 0.9rem;
+    color: var(--text-light);
 }
-.btn-page:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-}
-.btn-page:hover:not(:disabled) {
-    background: var(--accent);
-}
-.page-info { font-weight: bold; color: var(--text-main); }
-
-/* Botón de Borrar en Tabla */
-.btn-delete {
-    background: #c0392b; /* Rojo fuerte */
-    color: white;
-    padding: 6px 12px; 
-    font-size: 0.85rem;
-    border-radius: 4px;
-    cursor: pointer;
-    border: none;
-    transition: background 0.3s;
-}
-.btn-delete:hover { background: #a93226; }
+.breadcrumbs a { color: var(--primary); text-decoration: none; font-weight: bold; }
+.breadcrumbs a:hover { color: var(--accent); }
+.separator { margin: 0 10px; color: #ccc; }
