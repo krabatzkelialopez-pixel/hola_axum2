@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Administración | Axum Motors</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* Estilos específicos para paginación */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .btn-page {
+            padding: 8px 16px;
+            background: var(--primary);
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-page:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .btn-page:hover:not(:disabled) {
+            background: var(--accent);
+        }
+        .page-info { font-weight: bold; }
+        
+        /* Estilos para botones de acción */
+        .btn-delete {
+            background: #c0392b; 
+            color: white;
+            padding: 5px 10px; 
+            font-size: 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="/" class="logo-container">
+            <img src="/img/logo.png" alt="Axum Motors Logo" class="site-logo">
+        </a>
+        <p>Panel de Administración</p>
+    </header>
+
+    <div class="page-banner">
+        <h1>📋 Gestión de Mensajes</h1>
+    </div>
+
+    <div class="container">
+        <div class="pagination">
+            <button id="prevBtn" class="btn-page" onclick="changePage(-1)">« Anterior</button>
+            <span id="pageInfo" class="page-info">Cargando...</span>
+            <button id="nextBtn" class="btn-page" onclick="changePage(1)">Siguiente »</button>
+        </div>
+
+        <br>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Mensaje</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-mensajes">
+                </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Proteger entrada simple
+        const password = prompt("Ingrese contraseña de administrador:");
+        if(password !== "axum2026") {
+            alert("Acceso denegado");
+            window.location.href = "/";
+        }
+
+        let currentPage = 1;
+        let totalPages = 1;
+        const limit = 5; // Mensajes por página
+
+        async function loadMensajes(page) {
+            try {
+                // Llamamos a la API con paginación
+                const res = await fetch(`/mensajes?page=${page}&limit=${limit}`);
+                const responseData = await res.json();
+                
+                const tbody = document.getElementById("tabla-mensajes");
+                tbody.innerHTML = "";
+
+                // Actualizar variables globales
+                currentPage = responseData.page;
+                totalPages = responseData.total_pages;
+
+                if (responseData.data.length === 0) {
+                    tbody.innerHTML = "<tr><td colspan='4' style='text-align:center'>No hay mensajes.</td></tr>";
+                } else {
+                    // Renderizar filas
+                    responseData.data.forEach(msg => {
+                        const row = `<tr>
+                            <td>${msg.id}</td>
+                            <td>${msg.nombre}</td>
+                            <td>${msg.mensaje}</td>
+                            <td>
+                                <button class="btn-delete" onclick="eliminar(${msg.id})">Borrar</button>
+                            </td>
+                        </tr>`;
+                        tbody.innerHTML += row;
+                    });
+                }
+
+                updatePaginationControls();
+            } catch (error) {
+                console.error("Error cargando mensajes:", error);
+            }
+        }
+
+        function updatePaginationControls() {
+            const pageInfo = document.getElementById("pageInfo");
+            const prevBtn = document.getElementById("prevBtn");
+            const nextBtn = document.getElementById("nextBtn");
+
+            pageInfo.innerText = `Página ${currentPage} de ${Math.max(totalPages, 1)}`;
+            
+            prevBtn.disabled = currentPage <= 1;
+            nextBtn.disabled = currentPage >= totalPages;
+        }
+
+        function changePage(direction) {
+            const newPage = currentPage + direction;
+            if (newPage > 0 && newPage <= Math.max(totalPages, 1)) {
+                loadMensajes(newPage);
+            }
+        }
+
+        async function eliminar(id) {
+            if(!confirm("¿Seguro de eliminar este mensaje?")) return;
+            await fetch(`/mensajes/${id}`, { method: "DELETE" });
+            loadMensajes(currentPage); // Recargar página actual
+        }
+
+        // Cargar al inicio
+        loadMensajes(1);
+    </script>
+</body>
+</html>
