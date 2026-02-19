@@ -25,14 +25,14 @@ body {
 /* --- Header & Hero --- */
 
 header {
-    background-color: var(--primary); /* Fondo negro para la barra */
+    background-color: var(--primary);
     color: white;
     padding: 20px;
     display: flex;
-    justify-content: space-between; /* Separa Logo y Texto a los extremos */
+    justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    position: sticky; /* Se queda pegado arriba al bajar */
+    position: sticky;
     top: 0;
     z-index: 1000;
 }
@@ -40,7 +40,7 @@ header {
 header h1 {
     margin: 0;
     font-size: 1.5rem;
-    color: white; /* Asegura que el texto sea blanco */
+    color: white;
     font-weight: 800;
     letter-spacing: 1px;
 }
@@ -51,7 +51,7 @@ header p {
     opacity: 0.8;
 }
 
-/* ================= NUEVO: ESTILOS PARA EL LOGO ================= */
+/* --- LOGO --- */
 .logo-container {
     display: flex;
     align-items: center;
@@ -59,37 +59,30 @@ header p {
 }
 
 .site-logo {
-    height: 70px; /* Tamaño del logo */
-    width: auto;  /* Mantiene proporción */
+    height: 70px;
+    width: auto;
     display: block;
     transition: transform 0.3s ease;
 }
 
 .site-logo:hover {
-    transform: scale(1.05); /* Zoom al pasar el mouse */
+    transform: scale(1.05);
 }
-/* =============================================================== */
 
-
-/* ================= HERO SECTION (CORREGIDO) ================= */
+/* --- HERO SECTION --- */
 .hero {
-    /* Imagen de fondo Pexels (más estable) con filtro oscuro */
     background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), 
                       url('https://images.pexels.com/photos/2116475/pexels-photo-2116475.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
-    
     background-size: cover;       
     background-position: center;  
-    background-attachment: scroll; /* Cambiado a scroll para evitar problemas en móviles/railway */
-    
+    background-attachment: scroll;
     color: white;
     height: 80vh; 
     min-height: 500px;
-    
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    
     margin-bottom: 40px;
     position: relative;
 }
@@ -97,11 +90,11 @@ header p {
 .hero-content {
     max-width: 800px;
     padding: 20px;
-    animation: fadeIn 1.5s ease-out; /* Pequeña animación de entrada */
+    animation: fadeIn 1.5s ease-out;
 }
 
 .hero h2 {
-    font-size: 3.5rem; /* Letra mucho más grande */
+    font-size: 3.5rem;
     margin-bottom: 10px;
     font-weight: 800;
     text-transform: uppercase;
@@ -109,7 +102,6 @@ header p {
     letter-spacing: 1px;
 }
 
-/* Color naranja para la palabra "Potencia" */
 .highlight {
     color: var(--accent);
 }
@@ -121,12 +113,11 @@ header p {
     font-weight: 300;
 }
 
-/* ================= BOTÓN HERO (NUEVO) ================= */
 .btn-hero {
     background: var(--accent);
     color: white;
     padding: 15px 40px;
-    border-radius: 50px; /* Bordes totalmente redondos */
+    border-radius: 50px;
     font-size: 1rem;
     font-weight: bold;
     text-transform: uppercase;
@@ -137,24 +128,22 @@ header p {
 }
 
 .btn-hero:hover {
-    background: #d35400; /* Un naranja un poco más oscuro al pasar el mouse */
-    transform: translateY(-3px); /* El botón sube un poco */
+    background: #d35400;
+    transform: translateY(-3px);
     box-shadow: 0 8px 25px rgba(230, 126, 34, 0.6);
 }
 
-/* Animación simple de aparición */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Ajuste para móviles */
 @media (max-width: 768px) {
     .hero h2 { font-size: 2.2rem; }
     .hero { height: 60vh; }
 }
 
-/* --- Layout --- */
+/* --- Layout General --- */
 section, .container {
     max-width: 1200px;
     margin: 40px auto;
@@ -222,15 +211,12 @@ button:hover, .btn:hover {
 .moto h3, .card h3 { margin-top: 0; font-size: 1.2rem; }
 .price { color: var(--accent); font-weight: bold; font-size: 1.1rem; }
 
-/* --- ESTILOS PARA PÁGINAS INTERNAS (NUEVO) --- */
-
-/* Banner de título para páginas internas */
+/* --- PÁGINAS INTERNAS --- */
 .page-banner {
-    background-color: var(--primary); /* Mismo negro del header */
+    background-color: var(--primary);
     color: white;
     padding: 40px 20px;
     text-align: center;
-    /* Sutil degradado para darle profundidad */
     background-image: linear-gradient(to bottom, rgba(0,0,0,0.8), var(--primary));
 }
 
@@ -247,7 +233,6 @@ button:hover, .btn:hover {
     font-size: 1.1rem;
 }
 
-/* Breadcrumbs mejorados */
 .breadcrumbs {
     background: white;
     padding: 15px 0;
@@ -255,17 +240,13 @@ button:hover, .btn:hover {
     font-size: 0.9rem;
 }
 
-.breadcrumbs .container {
-    margin: 0 auto; /* Centrar el contenido */
-    padding: 0 20px; /* Márgenes laterales */
-}
-
-.breadcrumbs a { color: var(--text-light); font-weight: 600; }
+.breadcrumbs .container { margin: 0 auto; padding: 0 20px; }
+.breadcrumbs a { color: var(--text-light); font-weight: 600; text-decoration: none; }
 .breadcrumbs a:hover { color: var(--accent); }
 .breadcrumbs .separator { margin: 0 10px; color: #ccc; }
 .breadcrumbs strong { color: var(--accent); }
 
-/* Estilo de Tarjeta Unificado (para usar en catálogo) */
+/* --- PRODUCT CARDS --- */
 .card-product {
     background: var(--card-bg);
     border-radius: var(--radius);
@@ -287,7 +268,7 @@ button:hover, .btn:hover {
     width: 100%;
     height: 220px;
     object-fit: cover;
-    border-bottom: 3px solid var(--accent); /* Línea naranja de acento */
+    border-bottom: 3px solid var(--accent);
 }
 
 .card-content {
@@ -306,14 +287,9 @@ button:hover, .btn:hover {
     font-weight: 800; 
     margin-bottom: 15px;
 }
-.card-content .price span { color: var(--accent); } /* Color para el símbolo $ */
+.card-content .price span { color: var(--accent); }
 
-/* Botón de Regresar Elegante */
-.btn-back-container {
-    text-align: center;
-    margin: 50px 0;
-}
-
+.btn-back-container { text-align: center; margin: 50px 0; }
 .btn-back {
     display: inline-flex;
     align-items: center;
@@ -327,15 +303,8 @@ button:hover, .btn:hover {
     transition: all 0.3s ease;
 }
 
-.btn-back:hover {
-    background-color: var(--primary);
-    color: white;
-    transform: translateX(-5px); /* Pequeño movimiento al pasar el mouse */
-}
-
+.btn-back:hover { background-color: var(--primary); color: white; transform: translateX(-5px); }
 .btn-back span { margin-right: 10px; font-size: 1.2rem; }
-
-
 
 /* --- Forms --- */
 form {
@@ -355,26 +324,11 @@ input, textarea {
     border: 1px solid #ddd;
     border-radius: 6px;
     font-family: inherit;
-    transition: border 0.3s;
 }
 
-input:focus, textarea:focus {
-    outline: none;
-    border-color: var(--accent);
-}
+input:focus, textarea:focus { outline: none; border-color: var(--accent); }
 
-/* --- Mensajes y Utilidades --- */
-.msg {
-    margin-top: 15px;
-    padding: 10px;
-    border-radius: 4px;
-    text-align: center;
-    font-weight: bold;
-}
-.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-
-/* --- Tabla Admin --- */
+/* --- Tabla & Admin --- */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -385,14 +339,94 @@ table {
 }
 th { background: var(--primary); color: white; padding: 15px; text-align: left; }
 td { padding: 15px; border-bottom: 1px solid #eee; }
-tr:last-child td { border-bottom: none; }
 
-/* --- Breadcrumbs (legacy support) --- */
-.breadcrumbs {
-    padding: 20px 0;
-    font-size: 0.9rem;
-    color: var(--text-light);
+/* ========================================================== */
+/* NUEVO: ESTILOS PANEL ADMINISTRATIVO (SIDEBAR & LAYOUT)     */
+/* ========================================================== */
+
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+    margin: 0;
+    background-color: var(--bg-color);
 }
-.breadcrumbs a { color: var(--primary); text-decoration: none; font-weight: bold; }
-.breadcrumbs a:hover { color: var(--accent); }
-.separator { margin: 0 10px; color: #ccc; }
+
+/* Sidebar Fija */
+.sidebar {
+    width: 260px;
+    background: var(--primary);
+    color: white;
+    padding: 25px 20px;
+    position: fixed;
+    height: 100vh;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+    z-index: 1100;
+}
+
+.sidebar h2 {
+    color: var(--accent);
+    font-size: 1.1rem;
+    text-align: center;
+    border: none;
+    margin-bottom: 40px;
+    padding-left: 0;
+}
+
+.sidebar nav ul { list-style: none; padding: 0; }
+.sidebar nav ul li { margin-bottom: 8px; }
+
+.sidebar nav ul li a {
+    color: #bbb;
+    text-decoration: none;
+    display: block;
+    padding: 12px 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.sidebar nav ul li a:hover, 
+.sidebar nav ul li a.active {
+    background: var(--accent);
+    color: white;
+}
+
+/* Contenido a la derecha de la sidebar */
+.admin-main {
+    margin-left: 260px;
+    flex: 1;
+    padding: 40px;
+}
+
+/* Paginación */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 30px;
+}
+
+.pagination button {
+    background: white;
+    color: var(--primary);
+    border: 1px solid #ddd;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.pagination button.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+.msg {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+}
+.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }

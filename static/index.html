@@ -113,25 +113,9 @@
     </form>
 </section>
 
-<section>
-    <h2>📋 Panel de Mensajes (Admin)</h2>
-    <div style="overflow-x:auto;">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Mensaje</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="mensajes-table"></tbody>
-        </table>
-    </div>
-</section>
-
 <footer>
     <p>© 2026 Axum Motors</p>
+    <a href="/admin_mensajes.html" style="color: #666; font-size: 0.8rem; text-decoration: none; border-top: 1px solid #333; padding-top: 10px; display: inline-block;">Acceso Administrativo</a>
 </footer>
 
 <script>
@@ -168,7 +152,6 @@ document.querySelector("form[action='/upload-image']")
     msgDiv.innerText = await res.text();
     msgDiv.className = "msg success"; 
     
-    // Recargar galería automáticamente después de subir
     setTimeout(loadImages, 1000);
 });
 
@@ -224,73 +207,6 @@ async function loadImages() {
     });
 }
 loadImages();
-
-/* ===== CRUD ADMIN ===== */
-async function cargarMensajes() {
-    const res = await fetch("/mensajes");
-    if (!res.ok) return;
-
-    const mensajes = await res.json();
-    const tbody = document.getElementById("mensajes-table");
-    tbody.innerHTML = "";
-
-    mensajes.forEach(m => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td>${m.id}</td>
-            <td>${m.nombre}</td>
-            <td>${m.mensaje}</td>
-            <td>
-                <button onclick="editarMensaje(${m.id}, '${m.nombre}', '${m.mensaje}')" 
-                style="background:var(--accent);color:white;margin-right:5px;">✏️</button>
-
-                <button onclick="eliminarMensaje(${m.id})" 
-                style="background:#c0392b;color:white;">🗑</button>
-            </td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
-async function editarMensaje(id, nombre, mensaje) {
-    const nuevoNombre = prompt("Nuevo nombre:", nombre);
-    const nuevoMensaje = prompt("Nuevo mensaje:", mensaje);
-
-    if (!nuevoNombre || !nuevoMensaje) return;
-
-    const formData = new URLSearchParams();
-    formData.append("nombre", nuevoNombre);
-    formData.append("mensaje", nuevoMensaje);
-
-    const res = await fetch(`/mensajes/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: formData
-    });
-
-    if (!res.ok) {
-        alert("❌ Error al actualizar");
-        return;
-    }
-
-    alert(await res.text());
-    cargarMensajes();
-}
-
-async function eliminarMensaje(id) {
-    if (!confirm("¿Eliminar mensaje?")) return;
-    const res = await fetch(`/mensajes/${id}`, { method: "DELETE" });
-
-    if (!res.ok) {
-        alert("❌ Error al eliminar");
-        return;
-    }
-
-    alert(await res.text());
-    cargarMensajes();
-}
-
-cargarMensajes();
 </script>
 
 </body>
