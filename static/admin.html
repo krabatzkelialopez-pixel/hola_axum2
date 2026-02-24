@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Panel Admin | Axum Motors</title>
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>Axum Motors</h2>
+    <a href="/index.html">🏠 Inicio</a>
+    <a href="/motos.html">🏍 Motos</a>
+    <a href="/otros.html">🚲 Otros</a>
+    <a href="/contacto.html">✉️ Contacto</a>
+    <a href="/admin.html">📋 Admin</a>
+</div>
+
+<div class="main-content">
+    <div class="page-title">Panel de Mensajes</div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Mensaje</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="mensajes-table"></tbody>
+    </table>
+</div>
+
+<script>
+async function cargarMensajes() {
+    const res = await fetch("/mensajes");
+    const mensajes = await res.json();
+    const tbody = document.getElementById("mensajes-table");
+    tbody.innerHTML = "";
+
+    mensajes.forEach(m => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${m.id}</td>
+            <td>${m.nombre}</td>
+            <td>${m.mensaje}</td>
+            <td>
+                <button onclick="eliminarMensaje(${m.id})">🗑</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+async function eliminarMensaje(id) {
+    if (!confirm("¿Eliminar mensaje?")) return;
+
+    await fetch(`/mensajes/${id}`, { method: "DELETE" });
+    cargarMensajes();
+}
+
+cargarMensajes();
+</script>
+
+</body>
+</html>

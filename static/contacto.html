@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Contacto | Axum Motors</title>
+<link rel="stylesheet" href="/css/styles.css">
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>Axum Motors</h2>
+    <a href="/index.html">🏠 Inicio</a>
+    <a href="/motos.html">🏍 Motos</a>
+    <a href="/otros.html">🚲 Otros</a>
+    <a href="/contacto.html">✉️ Contacto</a>
+    <a href="/admin.html">📋 Admin</a>
+</div>
+
+<div class="main-content">
+    <div class="page-title">Contacto</div>
+
+    <form action="/enviar" method="post">
+        <input type="text" name="nombre" placeholder="Nombre completo" required>
+        <textarea name="mensaje" placeholder="Mensaje" required></textarea>
+        <div class="g-recaptcha" data-sitekey="TU_SITE_KEY"></div>
+        <button type="submit">Enviar mensaje</button>
+    </form>
+</div>
+
+</body>
+</html>
