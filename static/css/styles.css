@@ -362,3 +362,24 @@ button, .btn {
         max-width: 100%;
     }
 }
+/* ===== BREADCRUMBS ===== */
+.breadcrumbs {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+.breadcrumbs a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.breadcrumbs .separator {
+    margin: 0 8px;
+    color: #9ca3af;
+}
+
+.breadcrumbs strong {
+    color: var(--primary);
+}

@@ -1,26 +1,93 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Otros Vehículos | Axum Motors</title>
-<link rel="stylesheet" href="/css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scooters y Otros | Axum Motors</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
-
 <body>
 
 <div class="sidebar">
     <h2>Axum Motors</h2>
     <a href="/index.html">🏠 Inicio</a>
     <a href="/motos.html">🏍 Motos</a>
-    <a href="/otros.html">🚲 Otros</a>
+    <a href="/otros.html" class="active">🚲 Otros</a>
     <a href="/contacto.html">✉️ Contacto</a>
     <a href="/admin.html">📋 Admin</a>
 </div>
 
 <div class="main-content">
-    <div class="page-title">Otros Vehículos</div>
+    <div class="hero" style="padding: 40px; text-align: left; background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('https://images.unsplash.com/photo-1511919884226-fd3cad34687c?q=80&w=1000&auto=format&fit=crop'); background-size: cover;">
+        <h1>🛵 <span>Scooters</span> y Alternativas</h1>
+        <p class="subtitle">Movilidad urbana, diversión y aventura off-road.</p>
+        
+        <nav class="breadcrumbs">
+            <a href="/index.html">Inicio</a>
+            <span class="separator">›</span>
+            <strong>Scooters y Otros</strong>
+        </nav>
+    </div>
 
-    <p>Scooters, bicicletas y cuatrimotos disponibles próximamente.</p>
+    <div class="grid-container">
+        
+        <div class="moto-card">
+            <div class="moto-image">
+                <img src="/uploads/scot12.jpg" alt="Scooter Eléctrico">
+                <span class="badge">Ecológico</span>
+            </div>
+            <div class="moto-info">
+                <h3>Scooter Eléctrico Urbano</h3>
+                <p class="specs">Velocidad: 45km/h | Autonomía: 60km</p>
+                <p class="price">$45,000 MXN</p>
+                <button class="btn-primary" style="width: 100%; border: none;">Ver Detalles</button>
+            </div>
+        </div>
+
+        <div class="moto-card">
+            <div class="moto-image">
+                <img src="/uploads/bicielec.jpg" alt="Bicicleta Eléctrica">
+                <span class="badge">Ecológico</span>
+            </div>
+            <div class="moto-info">
+                <h3>Bicicleta Eléctrica Pro</h3>
+                <p class="specs">Motor 350W | Pedaleo Asistido</p>
+                <p class="price">$32,000 MXN</p>
+                <button class="btn-primary" style="width: 100%; border: none;">Ver Detalles</button>
+            </div>
+        </div>
+
+        <div class="moto-card">
+            <div class="moto-image">
+                <img src="/uploads/cuatri1.jpg" alt="Cuatrimoto 250cc">
+                <span class="badge">Off-Road</span>
+            </div>
+            <div class="moto-info">
+                <h3>Cuatrimoto ATV 250cc</h3>
+                <p class="specs">Transmisión Automática | Reversa</p>
+                <p class="price">$85,000 MXN</p>
+                <button class="btn-primary" style="width: 100%; border: none;">Ver Detalles</button>
+            </div>
+        </div>
+
+        <div class="moto-card">
+            <div class="moto-image">
+                <img src="/uploads/cuatrimoto450.jpg" alt="Cuatrimoto 450cc">
+                <span class="badge">Aventura</span>
+            </div>
+            <div class="moto-info">
+                <h3>Cuatrimoto Sport 450cc</h3>
+                <p class="specs">Tracción 4x4 | Suspensión Pro</p>
+                <p class="price">$110,000 MXN</p>
+                <button class="btn-primary" style="width: 100%; border: none;">Ver Detalles</button>
+            </div>
+        </div>
+
+    </div>
+
+    <footer style="margin-top: 50px; text-align: center; color: #6b7280; font-size: 0.9rem; padding-bottom: 20px;">
+        <p>© 2026 Axum Motors - Proyecto Universitario Rust + Axum</p>
+    </footer>
 </div>
 
 </body>
