@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Panel Admin | Axum Motors</title>
-<link rel="stylesheet" href="/css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin | Axum Motors</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 
 <body>
@@ -14,49 +15,78 @@
     <a href="/motos.html">🏍 Motos</a>
     <a href="/otros.html">🚲 Otros</a>
     <a href="/contacto.html">✉️ Contacto</a>
-    <a href="/admin.html">📋 Admin</a>
+    <a href="/admin.html" class="active">📋 Admin</a>
 </div>
 
 <div class="main-content">
-    <div class="page-title">Panel de Mensajes</div>
+    <div class="page-title">Panel de Administración</div>
+    
+    <div class="admin-tools">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Buscar por nombre..." onkeyup="filtrarTabla()">
+        </div>
+        <button class="btn-create" onclick="window.location.href='/contacto.html'">
+            <span>+</span> Nuevo Registro
+        </button>
+    </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Mensaje</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="mensajes-table"></tbody>
-    </table>
+    <div class="table-container">
+        <table class="admin-table" id="tablaMensajes">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Mensaje</th>
+                    <th style="text-align: center;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="mensajes-table">
+                </tbody>
+        </table>
+    </div>
 </div>
 
 <script>
+let mensajesData = []; // Guardamos los datos localmente para el buscador
+
 async function cargarMensajes() {
     const res = await fetch("/mensajes");
-    const mensajes = await res.json();
+    mensajesData = await res.json();
+    renderizarTabla(mensajesData);
+}
+
+function renderizarTabla(data) {
     const tbody = document.getElementById("mensajes-table");
     tbody.innerHTML = "";
 
-    mensajes.forEach(m => {
+    data.forEach(m => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
-            <td>${m.id}</td>
-            <td>${m.nombre}</td>
-            <td>${m.mensaje}</td>
-            <td>
-                <button onclick="eliminarMensaje(${m.id})">🗑</button>
+            <td class="id-cell">#${m.id}</td>
+            <td class="name-cell">${m.nombre}</td>
+            <td class="msg-cell">${m.mensaje}</td>
+            <td class="actions-cell">
+                <button class="btn-delete" onclick="eliminarMensaje(${m.id})">
+                    🗑 Eliminar
+                </button>
             </td>
         `;
         tbody.appendChild(tr);
     });
 }
 
-async function eliminarMensaje(id) {
-    if (!confirm("¿Eliminar mensaje?")) return;
+// Función del Buscador
+function filtrarTabla() {
+    const busqueda = document.getElementById("searchInput").value.toLowerCase();
+    const resultados = mensajesData.filter(m => 
+        m.nombre.toLowerCase().includes(busqueda) || 
+        m.mensaje.toLowerCase().includes(busqueda)
+    );
+    renderizarTabla(resultados);
+}
 
+async function eliminarMensaje(id) {
+    if (!confirm("¿Eliminar este registro?")) return;
     await fetch(`/mensajes/${id}`, { method: "DELETE" });
     cargarMensajes();
 }
