@@ -1,7 +1,6 @@
 /* ============================= */
 /* ===== VARIABLES GLOBALES ==== */
 /* ============================= */
-
 :root {
     --primary: #1f2937;
     --accent: #f97316;
@@ -14,30 +13,17 @@
 /* ============================= */
 /* ===== CONFIGURACIÓN GLOBAL === */
 /* ============================= */
-
 body {
     margin: 0;
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     background: var(--bg-color);
     color: var(--text-main);
-    display: flex; /* IMPORTANTE para sidebar */
-}
-
-/* ============================= */
-/* ===== HEADER (SI LO USAS) === */
-/* ============================= */
-
-header {
-    background: var(--primary);
-    padding: 20px;
-    color: white;
-    text-align: center;
+    display: flex; 
 }
 
 /* ============================= */
 /* ===== SIDEBAR =============== */
 /* ============================= */
-
 .sidebar {
     width: 220px;
     height: 100vh;
@@ -49,6 +35,7 @@ header {
     left: 0;
     top: 0;
     box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+    z-index: 100;
 }
 
 .sidebar h2 {
@@ -64,7 +51,7 @@ header {
     transition: all 0.3s ease;
 }
 
-.sidebar a:hover {
+.sidebar a:hover, .sidebar a.active {
     background: var(--accent);
     padding-left: 35px;
 }
@@ -72,63 +59,120 @@ header {
 /* ============================= */
 /* ===== CONTENIDO PRINCIPAL === */
 /* ============================= */
-
 .main-content {
-    margin-left: 220px; /* espacio para sidebar */
+    margin-left: 220px; 
     padding: 40px;
-    width: 100%;
+    width: calc(100% - 220px);
 }
 
-.page-title {
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-/* ============================= */
-/* ===== HERO (SI LO USAS) ===== */
-/* ============================= */
-
+/* ===== HERO SECTION ===== */
 .hero {
     background: white;
-    padding: 40px;
+    padding: 60px 40px;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin: 0 0 10px 0;
+}
+
+.hero h1 span {
+    color: var(--accent);
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: #6b7280;
     margin-bottom: 30px;
 }
 
-/* ============================= */
-/* ===== TARJETAS / CATÁLOGO === */
-/* ============================= */
-
-.catalogo {
-    margin-top: 20px;
+/* ===== BOTONES DEL HERO ===== */
+.hero-actions {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    justify-content: center;
+    gap: 15px;
 }
 
-.card {
+.btn-primary {
+    background: var(--accent);
+    color: white;
+    padding: 12px 25px;
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-secondary {
+    background: #e5e7eb;
+    color: var(--primary);
+    padding: 12px 25px;
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-primary:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3); }
+.btn-secondary:hover { background: #d1d5db; }
+
+/* ===== GRID DE CARACTERÍSTICAS ===== */
+.features {
+    margin-top: 20px;
+}
+
+.section-header {
+    margin-bottom: 30px;
+}
+
+.section-header h3 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.feature-card {
     background: white;
-    padding: 20px;
+    padding: 30px;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    max-width: 400px;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+    border-top: 4px solid transparent;
 }
 
-.card:hover {
-    transform: translateY(-5px);
+.feature-card:hover {
+    transform: translateY(-10px);
+    border-top: 4px solid var(--accent);
 }
 
-.card h3 {
-    margin-top: 0;
+.feature-card .icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
 }
 
-/* ============================= */
-/* ===== BOTONES =============== */
-/* ============================= */
+.feature-card h4 {
+    margin: 10px 0;
+    font-size: 1.2rem;
+    color: var(--primary);
+}
 
+.feature-card p {
+    color: #4b5563;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Mantener tus estilos anteriores de botones por si los usas en otras páginas */
 button, .btn {
     background: var(--accent);
     border: none;
@@ -137,8 +181,4 @@ button, .btn {
     border-radius: var(--radius);
     cursor: pointer;
     transition: 0.3s;
-}
-
-button:hover, .btn:hover {
-    opacity: 0.9;
 }

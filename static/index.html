@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Inicio | Axum Motors</title>
-<link rel="stylesheet" href="/css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio | Axum Motors</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
-
 <body>
 
 <div class="sidebar">
     <h2>Axum Motors</h2>
-    <a href="/index.html">🏠 Inicio</a>
+    <a href="/index.html" class="active">🏠 Inicio</a>
     <a href="/motos.html">🏍 Motos</a>
     <a href="/otros.html">🚲 Otros</a>
     <a href="/contacto.html">✉️ Contacto</a>
@@ -18,24 +18,41 @@
 </div>
 
 <div class="main-content">
-    <div class="page-title">Inicio</div>
+    <section class="hero">
+        <h1>Bienvenido a <span>Axum Motors</span></h1>
+        <p class="subtitle">Potencia y eficiencia gestionadas con tecnología de vanguardia (Rust + Axum).</p>
+        <div class="hero-actions">
+            <a href="/motos.html" class="btn-primary">Explorar Catálogo</a>
+            <a href="/contacto.html" class="btn-secondary">Saber más</a>
+        </div>
+    </section>
 
-    <p>Bienvenido a Axum Motors.</p>
-    <p>Sitio desarrollado con Rust + Axum + PostgreSQL.</p>
+    <section class="features">
+        <div class="section-header">
+            <h3>Arquitectura del Proyecto</h3>
+            <p>Detalles técnicos del sistema universitario</p>
+        </div>
 
-    <div class="catalogo">
-        <div class="card">
-            <div class="card-content">
-                <h3>Proyecto Universitario</h3>
-                <p>Este sistema incluye:</p>
-                <ul>
-                    <li>CRUD de mensajes</li>
-                    <li>Subida de imágenes</li>
-                    <li>Base de datos en Railway</li>
-                </ul>
+        <div class="grid-container">
+            <div class="feature-card">
+                <div class="icon">🦀</div>
+                <h4>Backend Rust</h4>
+                <p>Servidor de alto rendimiento construido con <strong>Axum</strong> para una gestión de datos segura y veloz.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="icon">🗄️</div>
+                <h4>Persistencia</h4>
+                <p>Base de datos <strong>PostgreSQL</strong> integrada, actualmente alojada en la nube mediante <strong>Railway</strong>.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="icon">🚀</div>
+                <h4>Funciones Core</h4>
+                <p>Sistema completo que incluye <strong>CRUD</strong> de mensajes, gestión de inventario y subida de imágenes.</p>
             </div>
         </div>
-    </div>
+    </section>
 </div>
 
 </body>
