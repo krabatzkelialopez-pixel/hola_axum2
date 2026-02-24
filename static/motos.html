@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Motos | Axum Motors</title>
-<link rel="stylesheet" href="/css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motos | Axum Motors</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 
 <body>
@@ -11,7 +12,7 @@
 <div class="sidebar">
     <h2>Axum Motors</h2>
     <a href="/index.html">🏠 Inicio</a>
-    <a href="/motos.html">🏍 Motos</a>
+    <a href="/motos.html" class="active">🏍 Motos</a>
     <a href="/otros.html">🚲 Otros</a>
     <a href="/contacto.html">✉️ Contacto</a>
     <a href="/admin.html">📋 Admin</a>
@@ -19,23 +20,36 @@
 
 <div class="main-content">
     <div class="page-title">Catálogo de Motos</div>
+    <p class="subtitle">Explora nuestra selección de alta cilindrada y estilo único.</p>
 
-    <div class="catalogo">
-        <div class="moto">
-            <img src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=800&q=80">
+    <div class="grid-container">
+        
+        <div class="moto-card">
+            <div class="moto-image">
+                <img src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=800&q=80" alt="Yamaha R6">
+                <span class="badge">Deportiva</span>
+            </div>
             <div class="moto-info">
                 <h3>Yamaha R6</h3>
+                <p class="specs">600cc | 4 Cilindros</p>
                 <p class="price">$245,000 MXN</p>
+                <a href="#" class="btn-primary" style="display: block; text-align: center;">Ver Detalles</a>
             </div>
         </div>
 
-        <div class="moto">
-            <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=800&q=80">
+        <div class="moto-card">
+            <div class="moto-image">
+                <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=800&q=80" alt="Harley Davidson">
+                <span class="badge">Cruiser</span>
+            </div>
             <div class="moto-info">
                 <h3>Harley Davidson</h3>
+                <p class="specs">1200cc | V-Twin</p>
                 <p class="price">$195,000 MXN</p>
+                <a href="#" class="btn-primary" style="display: block; text-align: center;">Ver Detalles</a>
             </div>
         </div>
+
     </div>
 </div>
 
