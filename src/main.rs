@@ -1,20 +1,16 @@
 use axum::{
-    extract::{Form, State, Multipart},
+    extract::{Form, State, Multipart, Path},
     routing::{get, post},
     response::{Html, IntoResponse},
     Json, Router,
 };
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use sqlx::{PgPool, Row};
 use std::{env, net::SocketAddr};
 use tower_http::{cors::CorsLayer, services::ServeDir};
 use tokio::io::AsyncWriteExt;
 use uuid::Uuid;
 use regex::Regex;
-use serde::Serialize;
-use axum::extract::Path;
-
-
 
 const MAX_IMAGE_SIZE: usize = 5 * 1024 * 1024;
 const ALLOWED_MIME: [&str; 4] = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
@@ -34,10 +30,6 @@ struct Mensaje {
     mensaje: String,
 }
 
-/* ============================= */
-/* ===== NUEVO PARA UPDATE ===== */
-/* ============================= */
-
 #[derive(Deserialize)]
 struct UpdateData {
     nombre: String,
@@ -48,32 +40,44 @@ struct UpdateData {
 async fn main() {
     dotenvy::dotenv().ok();
 
-    let pool = PgPool::connect(&env::var("DATABASE_URL").unwrap()).await.unwrap();
+    let pool = PgPool::connect(&env::var("DATABASE_URL").unwrap())
+        .await
+        .unwrap();
 
     let app = Router::new()
-    .route("/enviar", post(enviar))
-    .route("/upload-image", post(upload_image))
-    .route("/images", get(list_images))
+        // ===== RUTAS PRINCIPALES =====
+        .route("/enviar", post(enviar))
+        .route("/upload-image", post(upload_image))
+        .route("/images", get(list_images))
 
-    // ===== CRUD MENSAJES =====
-    .route("/mensajes", get(list_mensajes))
-    .route("/mensajes/:id", axum::routing::delete(delete_mensaje))
-    .route("/mensajes/:id", axum::routing::put(update_mensaje)) // 👈 AGREGADO
+        // ===== CRUD MENSAJES =====
+        .route("/mensajes", get(list_mensajes))
+        .route("/mensajes/:id", axum::routing::delete(delete_mensaje))
+        .route("/mensajes/:id", axum::routing::put(update_mensaje))
 
-    .nest_service("/uploads", ServeDir::new("uploads"))
-    .fallback_service(ServeDir::new("static"))
-    .with_state(pool)
-    .layer(CorsLayer::permissive());
+        // ===== ARCHIVOS ESTÁTICOS =====
+        .nest_service("/uploads", ServeDir::new("./uploads"))
+        .nest_service("/", ServeDir::new("./static")) // 👈 CAMBIO AQUÍ
 
+        .with_state(pool)
+        .layer(CorsLayer::permissive());
 
+    let port: u16 = env::var("PORT")
+        .unwrap_or("3000".into())
+        .parse()
+        .unwrap();
 
-    let port: u16 = env::var("PORT").unwrap_or("3000".into()).parse().unwrap();
-    let addr = SocketAddr::from(([0,0,0,0], port));
+    let addr = SocketAddr::from(([0, 0, 0, 0], port));
 
-    axum::serve(tokio::net::TcpListener::bind(addr).await.unwrap(), app).await.unwrap();
+    axum::serve(
+        tokio::net::TcpListener::bind(addr).await.unwrap(),
+        app
+    )
+    .await
+    .unwrap();
 }
 
-/* ---------- MENSAJES ---------- */
+/* ---------- ENVIAR MENSAJE ---------- */
 
 async fn enviar(
     State(pool): State<PgPool>,
@@ -108,9 +112,7 @@ async fn enviar(
     }
 }
 
-/* ============================= */
-/* ===== FUNCIÓN UPDATE ========= */
-/* ============================= */
+/* ---------- UPDATE ---------- */
 
 async fn update_mensaje(
     State(pool): State<PgPool>,
@@ -143,20 +145,19 @@ async fn update_mensaje(
     }
 }
 
-/* ---------- SUBIR IMÁGENES ---------- */
+/* ---------- SUBIR IMAGEN ---------- */
 
 async fn upload_image(
     State(pool): State<PgPool>,
     mut multipart: Multipart,
 ) -> impl IntoResponse {
 
-    tokio::fs::create_dir_all("uploads").await.unwrap();
+    tokio::fs::create_dir_all("./uploads").await.unwrap();
 
-    let mut file_saved = false; // Bandera para saber si realmente guardamos algo
+    let mut file_saved = false;
 
     while let Some(field) = multipart.next_field().await.unwrap() {
-        
-        // CORRECCIÓN AQUÍ: Cambiamos "image" por "file" para coincidir con el HTML
+
         if field.name() != Some("file") {
             continue;
         }
@@ -170,7 +171,6 @@ async fn upload_image(
             return Html("❌ Tipo de archivo no permitido").into_response();
         }
 
-        // field.bytes() consume el field, así que lo hacemos aquí
         let bytes = field.bytes().await.unwrap();
 
         if bytes.len() > MAX_IMAGE_SIZE {
@@ -185,12 +185,10 @@ async fn upload_image(
         };
 
         let filename = format!("{}.{}", Uuid::new_v4(), extension);
-        let path = format!("uploads/{}", filename);
+        let path = format!("./uploads/{}", filename);
 
-        // Guardar archivo en disco
         if let Ok(mut file) = tokio::fs::File::create(&path).await {
             if file.write_all(&bytes).await.is_ok() {
-                // Guardar referencia en BD
                 let insert_result = sqlx::query("INSERT INTO images (filename) VALUES ($1)")
                     .bind(&filename)
                     .execute(&pool)
@@ -206,11 +204,11 @@ async fn upload_image(
     if file_saved {
         Html("✅ Imagen subida correctamente").into_response()
     } else {
-        Html("❌ No se pudo guardar la imagen (Error interno o campo incorrecto)").into_response()
+        Html("❌ No se pudo guardar la imagen").into_response()
     }
 }
 
-/* ---------- LISTAR ---------- */
+/* ---------- LISTAR MENSAJES ---------- */
 
 async fn list_mensajes(State(pool): State<PgPool>) -> Json<Vec<Mensaje>> {
     let rows = sqlx::query("SELECT id, nombre, mensaje FROM mensajes ORDER BY id DESC")
@@ -253,14 +251,7 @@ async fn list_images(State(pool): State<PgPool>) -> Json<Vec<Image>> {
     Json(images)
 }
 
-/* ---------- UTIL ---------- */
-
-fn sanitize_text(text: &mut String) {
-    let forbidden = ["<", ">", "\"", "'", ";", "--", "script"];
-    for f in forbidden {
-        *text = text.replace(f, "");
-    }
-}
+/* ---------- DELETE ---------- */
 
 async fn delete_mensaje(
     State(pool): State<PgPool>,
@@ -273,5 +264,14 @@ async fn delete_mensaje(
     {
         Ok(_) => Html("✅ Mensaje eliminado"),
         Err(_) => Html("❌ Error al eliminar"),
+    }
+}
+
+/* ---------- UTIL ---------- */
+
+fn sanitize_text(text: &mut String) {
+    let forbidden = ["<", ">", "\"", "'", ";", "--", "script"];
+    for f in forbidden {
+        *text = text.replace(f, "");
     }
 }
