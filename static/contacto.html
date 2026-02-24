@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Contacto | Axum Motors</title>
-<link rel="stylesheet" href="/css/styles.css">
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto | Axum Motors</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body>
@@ -14,19 +15,35 @@
     <a href="/index.html">🏠 Inicio</a>
     <a href="/motos.html">🏍 Motos</a>
     <a href="/otros.html">🚲 Otros</a>
-    <a href="/contacto.html">✉️ Contacto</a>
+    <a href="/contacto.html" class="active">✉️ Contacto</a>
     <a href="/admin.html">📋 Admin</a>
 </div>
 
 <div class="main-content">
     <div class="page-title">Contacto</div>
+    <p class="subtitle">¿Tienes alguna duda sobre nuestras motos o el sistema? Escríbenos.</p>
 
-    <form action="/enviar" method="post">
-        <input type="text" name="nombre" placeholder="Nombre completo" required>
-        <textarea name="mensaje" placeholder="Mensaje" required></textarea>
-        <div class="g-recaptcha" data-sitekey="TU_SITE_KEY"></div>
-        <button type="submit">Enviar mensaje</button>
-    </form>
+    <div class="form-container">
+        <form action="/enviar" method="post" class="contact-form">
+            <div class="form-group">
+                <label for="nombre">Nombre completo</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Ej. Juan Pérez" required>
+            </div>
+
+            <div class="form-group">
+                <label for="mensaje">Tu mensaje</label>
+                <textarea id="mensaje" name="mensaje" rows="5" placeholder="Cuéntanos en qué podemos ayudarte..." required></textarea>
+            </div>
+
+            <div class="captcha-wrapper">
+                <div class="g-recaptcha" data-sitekey="6Lf0A00sAAAAALUJlTs6O9l1a93nyfUyvs-yBQlQ"></div>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; border: none; font-size: 1rem;">
+                Enviar mensaje
+            </button>
+        </form>
+    </div>
 </div>
 
 </body>

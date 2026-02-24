@@ -241,3 +241,59 @@ button, .btn {
     color: var(--accent);
     margin-bottom: 20px;
 }
+/* ===== FORMULARIO DE CONTACTO ===== */
+.form-container {
+    background: white;
+    padding: 40px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    max-width: 600px; /* Centramos y limitamos el ancho */
+    margin: 0 auto; /* Centra el bloque en el contenido principal */
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 0.9rem;
+}
+
+.contact-form input, 
+.contact-form textarea {
+    padding: 12px 15px;
+    border: 1px solid #d1d5db;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.contact-form input:focus, 
+.contact-form textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+
+.captcha-wrapper {
+    margin: 10px 0;
+    display: flex;
+    justify-content: center; /* Centra el reCAPTCHA */
+}
+
+/* Ajuste para que el botón se vea igual de bien que los del Hero */
+.contact-form .btn-primary {
+    cursor: pointer;
+    margin-top: 10px;
+}
