@@ -40,49 +40,76 @@
                     <th style="text-align: center;">Acciones</th>
                 </tr>
             </thead>
-            <tbody id="mensajes-table">
-                </tbody>
+            <tbody id="mensajes-table"></tbody>
         </table>
+
+        <div class="pagination">
+            <button id="btnPrev" onclick="cambiarPagina(-1)">Anterior</button>
+            <span id="pageInfo">Página 1 de 1</span>
+            <button id="btnNext" onclick="cambiarPagina(1)">Siguiente</button>
+        </div>
     </div>
 </div>
 
 <script>
-let mensajesData = []; // Guardamos los datos localmente para el buscador
+let mensajesData = []; 
+let datosFiltrados = [];
+let paginaActual = 1;
+const registrosPorPagina = 5; // <--- Cambia este número según prefieras
 
 async function cargarMensajes() {
     const res = await fetch("/mensajes");
     mensajesData = await res.json();
-    renderizarTabla(mensajesData);
+    datosFiltrados = [...mensajesData];
+    renderizarTabla();
 }
 
-function renderizarTabla(data) {
+function renderizarTabla() {
     const tbody = document.getElementById("mensajes-table");
     tbody.innerHTML = "";
 
-    data.forEach(m => {
+    // Lógica de paginación
+    const inicio = (paginaActual - 1) * registrosPorPagina;
+    const fin = inicio + registrosPorPagina;
+    const paginados = datosFiltrados.slice(inicio, fin);
+
+    paginados.forEach(m => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
             <td class="id-cell">#${m.id}</td>
             <td class="name-cell">${m.nombre}</td>
             <td class="msg-cell">${m.mensaje}</td>
             <td class="actions-cell">
-                <button class="btn-delete" onclick="eliminarMensaje(${m.id})">
-                    🗑 Eliminar
-                </button>
+                <button class="btn-delete" onclick="eliminarMensaje(${m.id})">🗑 Eliminar</button>
             </td>
         `;
         tbody.appendChild(tr);
     });
+
+    actualizarControles();
 }
 
-// Función del Buscador
+function actualizarControles() {
+    const totalPaginas = Math.ceil(datosFiltrados.length / registrosPorPagina) || 1;
+    document.getElementById("pageInfo").innerText = `Página ${paginaActual} de ${totalPaginas}`;
+    
+    document.getElementById("btnPrev").disabled = paginaActual === 1;
+    document.getElementById("btnNext").disabled = paginaActual === totalPaginas;
+}
+
+function cambiarPagina(direccion) {
+    paginaActual += direccion;
+    renderizarTabla();
+}
+
 function filtrarTabla() {
     const busqueda = document.getElementById("searchInput").value.toLowerCase();
-    const resultados = mensajesData.filter(m => 
+    datosFiltrados = mensajesData.filter(m => 
         m.nombre.toLowerCase().includes(busqueda) || 
         m.mensaje.toLowerCase().includes(busqueda)
     );
-    renderizarTabla(resultados);
+    paginaActual = 1; // Resetear a la primera página al buscar
+    renderizarTabla();
 }
 
 async function eliminarMensaje(id) {

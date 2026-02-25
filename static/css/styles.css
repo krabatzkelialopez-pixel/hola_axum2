@@ -383,3 +383,43 @@ button, .btn {
 .breadcrumbs strong {
     color: var(--primary);
 }
+
+/* ===== PAGINACIÓN ===== */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: #fcfcfc;
+    border-top: 1px solid #edf2f7;
+}
+
+.pagination button {
+    background: white;
+    border: 1px solid #d1d5db;
+    color: var(--primary);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.pagination button:hover:not(:disabled) {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: #fff7ed;
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #f3f4f6;
+}
+
+#pageInfo {
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-weight: 500;
+}
