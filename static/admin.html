@@ -33,7 +33,6 @@
         <table class="admin-table">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Nombre</th>
                     <th>Mensaje</th>
                     <th style="text-align: center;">Acciones</th>
@@ -94,8 +93,8 @@ function renderizarTabla() {
 
     paginados.forEach(m => {
         const tr = document.createElement("tr");
+        // Se eliminó la celda <td class="id-cell">
         tr.innerHTML = `
-            <td class="id-cell">#${m.id}</td>
             <td class="name-cell">${m.nombre}</td>
             <td class="msg-cell">${m.mensaje}</td>
             <td class="actions-cell">
@@ -110,7 +109,7 @@ function renderizarTabla() {
     actualizarControles();
 }
 
-// --- LÓGICA DEL MODAL ---
+// --- LÓGICA DE INTERFAZ ---
 function abrirModal(id, nombre, mensaje) {
     document.getElementById("editId").value = id;
     document.getElementById("editNombre").value = nombre;
@@ -125,8 +124,6 @@ function cerrarModal() {
 document.getElementById("editForm").onsubmit = async (e) => {
     e.preventDefault();
     const id = document.getElementById("editId").value;
-    
-    // Usamos URLSearchParams para enviar como Form Data (como espera tu Rust)
     const formData = new URLSearchParams();
     formData.append("nombre", document.getElementById("editNombre").value);
     formData.append("mensaje", document.getElementById("editMensaje").value);
@@ -137,15 +134,9 @@ document.getElementById("editForm").onsubmit = async (e) => {
         body: formData
     });
 
-    if (res.ok) {
-        cerrarModal();
-        cargarMensajes();
-    } else {
-        alert("Error al actualizar");
-    }
+    if (res.ok) { cerrarModal(); cargarMensajes(); }
 };
 
-// --- RESTO DE FUNCIONES (Paginado/Eliminar/etc) ---
 function actualizarControles() {
     const totalPaginas = Math.ceil(datosFiltrados.length / registrosPorPagina) || 1;
     document.getElementById("pageInfo").innerText = `Página ${paginaActual} de ${totalPaginas}`;
@@ -163,13 +154,12 @@ function filtrarTabla() {
 }
 
 async function eliminarMensaje(id) {
-    if (!confirm("¿Eliminar?")) return;
+    if (!confirm("¿Eliminar este registro?")) return;
     await fetch(`/mensajes/${id}`, { method: "DELETE" });
     cargarMensajes();
 }
 
 cargarMensajes();
 </script>
-
 </body>
 </html>
