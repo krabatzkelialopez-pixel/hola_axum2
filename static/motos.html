@@ -20,10 +20,18 @@
 
 <div class="main-content">
     <div class="page-title">Catálogo de Motos</div>
+    
+    <div class="admin-tools" style="margin-bottom: 30px; background: white; padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow);">
+        <h3>📤 Gestionar Catálogo</h3>
+        <form id="uploadForm" style="display: flex; gap: 15px; align-items: center;">
+            <input type="file" id="motoFile" name="file" accept="image/*" required>
+            <button type="submit" class="btn-primary" id="btnSubir">Subir Nueva Moto</button>
+        </form>
+    </div>
+
     <p class="subtitle">Explora nuestra selección de alta cilindrada y estilo único.</p>
 
-    <div class="grid-container">
-        
+    <div class="grid-container" id="grid-motos">
         <div class="moto-card">
             <div class="moto-image">
                 <img src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=800&q=80" alt="Yamaha R6">
@@ -36,22 +44,72 @@
                 <a href="#" class="btn-primary" style="display: block; text-align: center;">Ver Detalles</a>
             </div>
         </div>
-
-        <div class="moto-card">
-            <div class="moto-image">
-                <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=800&q=80" alt="Harley Davidson">
-                <span class="badge">Cruiser</span>
-            </div>
-            <div class="moto-info">
-                <h3>Harley Davidson</h3>
-                <p class="specs">1200cc | V-Twin</p>
-                <p class="price">$195,000 MXN</p>
-                <a href="#" class="btn-primary" style="display: block; text-align: center;">Ver Detalles</a>
-            </div>
-        </div>
-
     </div>
 </div>
+
+<script>
+    const gridMotos = document.getElementById('grid-motos');
+    const uploadForm = document.getElementById('uploadForm');
+
+    // 1. FUNCIÓN PARA CARGAR LAS IMÁGENES DESDE EL BACKEND
+    async function cargarImagenesSubidas() {
+        try {
+            const res = await fetch("/images");
+            const images = await res.json();
+            
+            // Renderizamos cada imagen subida como una nueva tarjeta
+            images.forEach(img => {
+                const card = document.createElement('div');
+                card.className = 'moto-card';
+                card.innerHTML = `
+                    <div class="moto-image">
+                        <img src="/uploads/${img.filename}" alt="Moto subida">
+                        <span class="badge">Nuevo Ingreso</span>
+                    </div>
+                    <div class="moto-info">
+                        <h3>Moto Registrada</h3>
+                        <p class="specs">ID: #${img.id} | Verificada</p>
+                        <p class="price">Consultar Precio</p>
+                        <a href="#" class="btn-primary" style="display: block; text-align: center;">Ver Detalles</a>
+                    </div>
+                `;
+                gridMotos.appendChild(card);
+            });
+        } catch (err) {
+            console.error("Error cargando imágenes:", err);
+        }
+    }
+
+    // 2. LÓGICA PARA SUBIR LA IMAGEN
+    uploadForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('btnSubir');
+        const fileInput = document.getElementById('motoFile');
+        
+        btn.innerText = "Subiendo...";
+        btn.disabled = true;
+
+        const formData = new FormData();
+        formData.append("file", fileInput.files[0]);
+
+        const res = await fetch("/upload-image", {
+            method: "POST",
+            body: formData
+        });
+
+        if (res.ok) {
+            alert("✅ Moto subida exitosamente");
+            location.reload(); // Recargamos para ver la nueva moto en el grid
+        } else {
+            alert("❌ Error al subir");
+            btn.innerText = "Subir Nueva Moto";
+            btn.disabled = false;
+        }
+    };
+
+    // Cargar al iniciar
+    cargarImagenesSubidas();
+</script>
 
 </body>
 </html>
