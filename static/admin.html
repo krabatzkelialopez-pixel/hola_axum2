@@ -6,7 +6,6 @@
     <title>Panel Admin | Axum Motors</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
-
 <body>
 
 <div class="sidebar">
@@ -31,7 +30,7 @@
     </div>
 
     <div class="table-container">
-        <table class="admin-table" id="tablaMensajes">
+        <table class="admin-table">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -45,17 +44,38 @@
 
         <div class="pagination">
             <button id="btnPrev" onclick="cambiarPagina(-1)">Anterior</button>
-            <span id="pageInfo">Página 1 de 1</span>
+            <span id="pageInfo"></span>
             <button id="btnNext" onclick="cambiarPagina(1)">Siguiente</button>
         </div>
     </div>
 </div>
 
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <h3>Editar Mensaje</h3>
+        <form id="editForm">
+            <input type="hidden" id="editId">
+            <div class="form-group">
+                <label>Nombre:</label>
+                <input type="text" id="editNombre" required>
+            </div>
+            <div class="form-group">
+                <label>Mensaje:</label>
+                <textarea id="editMensaje" rows="4" required></textarea>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" onclick="cerrarModal()">Cancelar</button>
+                <button type="submit" class="btn-primary">Guardar Cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
-let mensajesData = []; 
+let mensajesData = [];
 let datosFiltrados = [];
 let paginaActual = 1;
-const registrosPorPagina = 5; // <--- Cambia este número según prefieras
+const registrosPorPagina = 5;
 
 async function cargarMensajes() {
     const res = await fetch("/mensajes");
@@ -68,7 +88,6 @@ function renderizarTabla() {
     const tbody = document.getElementById("mensajes-table");
     tbody.innerHTML = "";
 
-    // Lógica de paginación
     const inicio = (paginaActual - 1) * registrosPorPagina;
     const fin = inicio + registrosPorPagina;
     const paginados = datosFiltrados.slice(inicio, fin);
@@ -80,40 +99,71 @@ function renderizarTabla() {
             <td class="name-cell">${m.nombre}</td>
             <td class="msg-cell">${m.mensaje}</td>
             <td class="actions-cell">
-                <button class="btn-delete" onclick="eliminarMensaje(${m.id})">🗑 Eliminar</button>
+                <div style="display:flex; gap:5px; justify-content:center;">
+                    <button class="btn-edit" onclick="abrirModal(${m.id}, '${m.nombre}', '${m.mensaje}')">✏️</button>
+                    <button class="btn-delete" onclick="eliminarMensaje(${m.id})">🗑</button>
+                </div>
             </td>
         `;
         tbody.appendChild(tr);
     });
-
     actualizarControles();
 }
 
+// --- LÓGICA DEL MODAL ---
+function abrirModal(id, nombre, mensaje) {
+    document.getElementById("editId").value = id;
+    document.getElementById("editNombre").value = nombre;
+    document.getElementById("editMensaje").value = mensaje;
+    document.getElementById("editModal").style.display = "flex";
+}
+
+function cerrarModal() {
+    document.getElementById("editModal").style.display = "none";
+}
+
+document.getElementById("editForm").onsubmit = async (e) => {
+    e.preventDefault();
+    const id = document.getElementById("editId").value;
+    
+    // Usamos URLSearchParams para enviar como Form Data (como espera tu Rust)
+    const formData = new URLSearchParams();
+    formData.append("nombre", document.getElementById("editNombre").value);
+    formData.append("mensaje", document.getElementById("editMensaje").value);
+
+    const res = await fetch(`/mensajes/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData
+    });
+
+    if (res.ok) {
+        cerrarModal();
+        cargarMensajes();
+    } else {
+        alert("Error al actualizar");
+    }
+};
+
+// --- RESTO DE FUNCIONES (Paginado/Eliminar/etc) ---
 function actualizarControles() {
     const totalPaginas = Math.ceil(datosFiltrados.length / registrosPorPagina) || 1;
     document.getElementById("pageInfo").innerText = `Página ${paginaActual} de ${totalPaginas}`;
-    
     document.getElementById("btnPrev").disabled = paginaActual === 1;
     document.getElementById("btnNext").disabled = paginaActual === totalPaginas;
 }
 
-function cambiarPagina(direccion) {
-    paginaActual += direccion;
-    renderizarTabla();
-}
+function cambiarPagina(dir) { paginaActual += dir; renderizarTabla(); }
 
 function filtrarTabla() {
-    const busqueda = document.getElementById("searchInput").value.toLowerCase();
-    datosFiltrados = mensajesData.filter(m => 
-        m.nombre.toLowerCase().includes(busqueda) || 
-        m.mensaje.toLowerCase().includes(busqueda)
-    );
-    paginaActual = 1; // Resetear a la primera página al buscar
+    const bus = document.getElementById("searchInput").value.toLowerCase();
+    datosFiltrados = mensajesData.filter(m => m.nombre.toLowerCase().includes(bus) || m.mensaje.toLowerCase().includes(bus));
+    paginaActual = 1;
     renderizarTabla();
 }
 
 async function eliminarMensaje(id) {
-    if (!confirm("¿Eliminar este registro?")) return;
+    if (!confirm("¿Eliminar?")) return;
     await fetch(`/mensajes/${id}`, { method: "DELETE" });
     cargarMensajes();
 }
